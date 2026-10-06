@@ -1,24 +1,33 @@
-# ArtScout
+# Artwell – das Online-Museum
 
-ArtScout ist eine Web-App zum Entdecken von Kunstwerken aus der Sammlung des Art Institute of Chicago. Sie richtet sich an Kunstinteressierte, Studierende und alle, die ohne Museumsbesuch durch eine große Sammlung stöbern und sich eigene Favoriten zusammenstellen möchten.
+Artwell ist ein Online-Museum mit Werken aus der Sammlung des Art Institute of Chicago. Jede Woche öffnet automatisch eine neue Ausstellung zu einem anderen Thema, und zu jedem Bild gibt es Informationen zu Künstler, Entstehung und Hintergrund. Die App richtet sich an Kunstinteressierte, Studierende und alle, die ohne Museumsbesuch Kunst entdecken möchten.
 
 **Live:** https://<euer-name>.github.io/<repo>/
 **Team:** Lisa Westenhöfer, Hasan Can, Leo Marker
 
 ## Was die App kann
 
-- Kunstwerke nach Titel, Künstler oder Stichwort suchen und die Ergebnisse als responsive Bildergalerie anzeigen
-- Ergebnisse nach Epoche bzw. Entstehungszeit filtern und seitenweise durchblättern (Pagination)
-- Eine Detailansicht mit großem Bild, Künstler, Datierung, Technik und Maßen öffnen
+- Jede Woche eine neue Ausstellung zu einem Thema (z. B. „Impressionismus“, „Tiere in der Kunst“, „Künstlerinnen“), die automatisch anhand der Kalenderwoche wechselt
+- Die Werke einer Ausstellung als Galerie anzeigen und seitenweise durchblättern
+- Eine Detailansicht mit großem Bild, Künstler, Datierung, Technik, Maßen und dem Beschreibungstext des Museums
+- Frei in der gesamten Sammlung nach Titel, Künstler oder Stichwort suchen
 - Kunstwerke als Favoriten speichern; die Favoritenliste bleibt im Browser (localStorage) erhalten
+- *Optional / geplant:* Für Werke ohne Museumstext auf Wunsch eine KI-Beschreibung erzeugen, die deutlich als „KI-generiert, nicht vom Museum geprüft“ gekennzeichnet ist
 
 ## Datenquelle
 
-Die App nutzt die öffentliche **Art Institute of Chicago API**, die ohne Registrierung und ohne API-Key zugänglich ist. Abgefragt wird der Endpunkt `/api/v1/artworks/search` mit den Feldern `id`, `title`, `artist_display`, `date_display`, `medium_display`, `dimensions` und `image_id`. Die Bilder werden über den IIIF-Bildserver des Museums geladen; die Bild-URL wird aus `config.iiif_url` und der `image_id` zusammengesetzt. Werke ohne `image_id` werden in der Galerie ausgeblendet.
+Die App nutzt die öffentliche **Art Institute of Chicago API**, die ohne Registrierung und ohne API-Key zugänglich ist. Laut API umfasst die Sammlung 133.119 Werke (Stand: Oktober 2026).
 
-Die Daten werden bei jeder Suche live von der API geladen, es gibt keine eigene Zwischenspeicherung. Aktualisierungen der Sammlung übernimmt das Museum selbst, sodass die App immer den aktuellen Stand der API zeigt.
+Abgefragt wird der Endpunkt `/api/v1/artworks/search`. Damit die Antworten klein bleiben, fragen wir über den Parameter `fields` nur die benötigten Felder ab: `id`, `title`, `artist_display`, `date_display`, `medium_display`, `dimensions`, `image_id`, `description`, `short_description`, `thumbnail`, `is_public_domain`, `copyright_notice` sowie für die Ausstellungsthemen `style_titles`, `subject_titles` und `theme_titles`.
+
+Die Bilder werden über den IIIF-Bildserver des Museums geladen; die Bild-URL wird aus `config.iiif_url` und der `image_id` zusammengesetzt. Werke ohne `image_id` werden ausgeblendet. Der Text aus `thumbnail.alt_text` dient als Alternativtext für Screenreader. Bei Werken, die nicht gemeinfrei sind, zeigen wir den `copyright_notice` in der Detailansicht an.
+
+Die Daten werden bei jedem Aufruf live von der API geladen, es gibt keine eigene Zwischenspeicherung. Aktualisierungen der Sammlung übernimmt das Museum selbst.
+
+**Lizenz:** Die Beschreibungstexte (`description`) stehen unter CC-BY 4.0 und werden in der App mit „Text: Art Institute of Chicago“ gekennzeichnet. Alle anderen Daten stehen unter CC0.
 
 Dokumentation: https://api.artic.edu/docs/
+
 
 ## Ausgeschiedene Projektideen
 - **Länder-Lexikon (REST Countries):** Es gibt nur ungefähr 250 Länder und die Daten ändern sich fast nie, deshalb hätten wir für Suche und Seiten gar nicht genug Inhalt gehabt.
