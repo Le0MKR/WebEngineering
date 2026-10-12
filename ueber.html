@@ -8,6 +8,8 @@
   <script src="app.js" defer></script>
 </head>
 <body>
+  <a href="#inhalt">Zum Inhalt springen</a>
+
   <header>
     <nav aria-label="Hauptmenü">
       <ul>
@@ -18,7 +20,7 @@
     </nav>
   </header>
 
-  <main>
+  <main id="inhalt">
     <h1>Über Artwell</h1>
     <p>Artwell ist ein Online-Museum mit wöchentlich wechselnden Ausstellungen.</p>
 
@@ -47,6 +49,41 @@
 
       <h3>Was Artwell nicht macht</h3>
       <p>Es gibt keine Nutzerkonten, keine Anmeldung und kein Tracking.</p>
+    </section>
+
+    <section aria-labelledby="vorschlag">
+      <h2 id="vorschlag">Thema vorschlagen</h2>
+      <p>Welche Ausstellung fehlt noch? Schlagt uns ein Thema vor. Felder mit dem Zusatz „Pflichtfeld“ müssen ausgefüllt sein.</p>
+
+      <form action="danke.html" method="get">
+        <p>
+          <label for="name">Name (Pflichtfeld)</label><br>
+          <input id="name" name="name" type="text" required minlength="2" autocomplete="name">
+        </p>
+        <p>
+          <label for="email">E-Mail (Pflichtfeld)</label><br>
+          <input id="email" name="email" type="email" required autocomplete="email">
+        </p>
+        <p>
+          <label for="thema">Thema der Ausstellung (Pflichtfeld)</label><br>
+          <input id="thema" name="thema" type="text" required minlength="3" maxlength="60" aria-describedby="thema-hinweis"><br>
+          <small id="thema-hinweis">Mindestens 3, höchstens 60 Zeichen, zum Beispiel „Brücken“.</small>
+        </p>
+        <p>
+          <label for="woche">Gewünschte Kalenderwoche</label><br>
+          <input id="woche" name="woche" type="number" min="1" max="53" aria-describedby="woche-hinweis"><br>
+          <small id="woche-hinweis">Eine Zahl von 1 bis 53. Das Feld kann leer bleiben.</small>
+        </p>
+        <p>
+          <label for="begruendung">Warum dieses Thema?</label><br>
+          <textarea id="begruendung" name="begruendung" rows="4" cols="40" maxlength="500"></textarea>
+        </p>
+        <p>
+          <button type="submit">Vorschlag absenden</button>
+        </p>
+      </form>
+
+      <p>Das Formular wird noch nicht ausgewertet: Eure Angaben werden weder gespeichert noch verschickt.</p>
     </section>
   </main>
 
