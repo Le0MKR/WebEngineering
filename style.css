@@ -25,10 +25,13 @@ main {
   padding: var(--abstand);
 }
 
-nav {
+nav ul {
   display: flex;
+  flex-wrap: wrap;
   gap: var(--abstand);
+  margin: 0;
   padding: var(--abstand);
+  list-style: none;
   background: var(--flaeche);
 }
 

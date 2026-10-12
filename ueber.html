@@ -3,19 +3,56 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Über – Projektname</title>
+  <title>Über das Projekt und das Team – Artwell</title>
   <link rel="stylesheet" href="style.css">
+  <script src="app.js" defer></script>
 </head>
 <body>
   <header>
     <nav aria-label="Hauptmenü">
-      <a href="index.html">Start</a>
-      <a href="ueber.html" aria-current="page">Über</a>
+      <ul>
+        <li><a href="index.html">Start</a></li>
+        <li><a href="ausstellungen.html">Ausstellungen</a></li>
+        <li><a href="ueber.html" aria-current="page">Über</a></li>
+      </ul>
     </nav>
   </header>
+
   <main>
-    <h1>Über dieses Projekt</h1>
-    <p>Wer hat es gebaut, warum, und woher kommen die Daten?</p>
+    <h1>Über Artwell</h1>
+    <p>Artwell ist ein Online-Museum mit wöchentlich wechselnden Ausstellungen.</p>
+
+    <section aria-labelledby="idee">
+      <h2 id="idee">Die Idee</h2>
+      <p>Wer sich für ein paar Minuten von Kunst überraschen lassen will, soll nicht erst suchen müssen. Deshalb wählt Artwell jede Kalenderwoche automatisch das nächste von 15 Themen aus.</p>
+      <p>Der Name verbindet „Art“ mit „<span lang="en">well</span>“, englisch für Brunnen: eine Quelle, aus der man immer wieder neue Kunst schöpfen kann.</p>
+    </section>
+
+    <section aria-labelledby="team">
+      <h2 id="team">Das Team</h2>
+      <ul>
+        <li>Lisa</li>
+        <li>Hasan</li>
+        <li>Leo</li>
+      </ul>
+      <p>Artwell entsteht als Projekt im Wahlfach Web-Engineering an der DHBW Karlsruhe.</p>
+    </section>
+
+    <section aria-labelledby="daten">
+      <h2 id="daten">Woher die Daten kommen</h2>
+      <p>Alle Werke stammen aus der Sammlung des Art Institute of Chicago. Das Museum stellt seine Daten über eine <a href="https://api.artic.edu/docs/" rel="noopener">öffentliche Schnittstelle</a> bereit.</p>
+
+      <h3>Was Artwell zeigt</h3>
+      <p>Nur gemeinfreie Werke, zu denen es eine Abbildung gibt.</p>
+
+      <h3>Was Artwell nicht macht</h3>
+      <p>Es gibt keine Nutzerkonten, keine Anmeldung und kein Tracking.</p>
+    </section>
   </main>
+
+  <footer>
+    <p>Artwell · Web-Engineering 1 · DHBW Karlsruhe · <span id="jahr"></span></p>
+    <p>Werkdaten und Abbildungen: <a href="https://www.artic.edu/" rel="noopener">Art Institute of Chicago</a></p>
+  </footer>
 </body>
 </html>

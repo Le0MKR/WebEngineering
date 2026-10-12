@@ -3,39 +3,54 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Projektname – kurze Beschreibung</title>
-  <meta name="description" content="Ein Satz, der erklärt, was diese Seite kann.">
+  <title>Artwell – Online-Museum mit wöchentlich wechselnden Ausstellungen</title>
   <link rel="stylesheet" href="style.css">
   <script src="app.js" defer></script>
 </head>
 <body>
   <header>
     <nav aria-label="Hauptmenü">
-      <a href="index.html">Start</a>
-      <a href="ueber.html">Über</a>
+      <ul>
+        <li><a href="index.html" aria-current="page">Start</a></li>
+        <li><a href="ausstellungen.html">Ausstellungen</a></li>
+        <li><a href="ueber.html">Über</a></li>
+      </ul>
     </nav>
   </header>
 
   <main>
-    <h1>Projektname</h1>
-    <p>Ein Satz dazu, was hier passiert.</p>
+    <h1>Artwell</h1>
+    <p>Ein Online-Museum, das jede Woche eine neue Ausstellung zeigt – mit gemeinfreien Werken aus der Sammlung des Art Institute of Chicago.</p>
 
-    <!-- Ab Termin 2: euer Formular
-    <form>
-      <label for="suche">Suche</label>
-      <input id="suche" name="suche" type="text" required minlength="3">
-      <button type="submit">Los</button>
-    </form>
-    -->
+    <section aria-labelledby="aktuell">
+      <h2 id="aktuell">Ausstellung der Woche: Impressionismus</h2>
+      <p>Licht, Farbe und der flüchtige Augenblick: Die Impressionisten malten nicht, was sie über die Welt wussten, sondern wie sie sie in einem Moment sahen. Das Art Institute besitzt eine der bedeutendsten Sammlungen dieser Bewegung außerhalb Frankreichs.</p>
 
-    <!-- Ab Termin 6: hier landen die Daten
-    <p id="status" role="status"></p>
-    <ul id="ergebnisse"></ul>
-    -->
+      <h3>Werke der Ausstellung</h3>
+      <p>Die Werke werden später live aus der Sammlung geladen. Bis dahin steht hier nur das Gerüst.</p>
+
+      <!-- Ab Termin 6: hier landen die Daten
+      <p id="status" role="status"></p>
+      <ul id="ergebnisse"></ul>
+      -->
+    </section>
+
+    <section aria-labelledby="ablauf">
+      <h2 id="ablauf">So funktioniert Artwell</h2>
+
+      <h3>Jede Woche ein neues Thema</h3>
+      <p>Wir haben 15 Themen zusammengestellt. Jede Kalenderwoche ist das nächste an der Reihe, und alle Besucherinnen und Besucher sehen dieselbe Ausstellung.</p>
+      <p><a href="ausstellungen.html">Alle Ausstellungen ansehen</a></p>
+
+      <h3>Kunst aus einer großen Sammlung</h3>
+      <p>Gezeigt werden nur gemeinfreie Werke mit Abbildung, jeweils mit Angaben zu Künstler, Entstehung und Technik.</p>
+      <p><a href="ueber.html">Mehr über das Projekt</a></p>
+    </section>
   </main>
 
   <footer>
-    <p>Web-Engineering 1 · DHBW Karlsruhe · <span id="jahr"></span></p>
+    <p>Artwell · Web-Engineering 1 · DHBW Karlsruhe · <span id="jahr"></span></p>
+    <p>Werkdaten und Abbildungen: <a href="https://www.artic.edu/" rel="noopener">Art Institute of Chicago</a></p>
   </footer>
 </body>
 </html>
