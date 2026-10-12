@@ -4,8 +4,43 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Artwell – Online-Museum mit wöchentlich wechselnden Ausstellungen</title>
+  <meta name="description" content="Artwell ist ein Online-Museum: Jede Woche eine neue Ausstellung mit gemeinfreien Werken aus dem Art Institute of Chicago.">
+  <link rel="canonical" href="https://le0mkr.github.io/WebEngineering/">
   <link rel="stylesheet" href="style.css">
   <script src="app.js" defer></script>
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "WebSite",
+        "@id": "https://le0mkr.github.io/WebEngineering/#website",
+        "name": "Artwell",
+        "url": "https://le0mkr.github.io/WebEngineering/",
+        "description": "Online-Museum mit wöchentlich wechselnden Ausstellungen aus der Sammlung des Art Institute of Chicago.",
+        "inLanguage": "de"
+      },
+      {
+        "@type": "ExhibitionEvent",
+        "name": "Impressionismus",
+        "description": "Licht, Farbe und der flüchtige Augenblick: Werke der Impressionisten aus der Sammlung des Art Institute of Chicago.",
+        "startDate": "2026-10-12",
+        "endDate": "2026-10-18",
+        "eventAttendanceMode": "https://schema.org/OnlineEventAttendanceMode",
+        "eventStatus": "https://schema.org/EventScheduled",
+        "location": {
+          "@type": "VirtualLocation",
+          "url": "https://le0mkr.github.io/WebEngineering/"
+        },
+        "organizer": {
+          "@type": "Organization",
+          "name": "Artwell",
+          "url": "https://le0mkr.github.io/WebEngineering/"
+        }
+      }
+    ]
+  }
+  </script>
 </head>
 <body>
   <a href="#inhalt">Zum Inhalt springen</a>

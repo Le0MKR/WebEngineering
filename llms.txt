@@ -1,0 +1,15 @@
+# Artwell
+
+> Artwell ist ein Online-Museum mit wöchentlich wechselnden Ausstellungen. Gezeigt werden gemeinfreie Werke aus der Sammlung des Art Institute of Chicago. Die Seite ist ein Studienprojekt im Kurs Web-Engineering 1 an der DHBW Karlsruhe und auf Deutsch verfasst.
+
+Stand: Die Seite besteht bisher aus dem HTML-Gerüst. Die Werke werden noch nicht aus der Schnittstelle des Museums geladen.
+
+## Seiten
+
+- [Start](https://le0mkr.github.io/WebEngineering/): Ausstellung der Woche und kurze Erklärung, wie Artwell funktioniert
+- [Ausstellungen](https://le0mkr.github.io/WebEngineering/ausstellungen.html): alle 15 Themen mit Einführungstext
+- [Über](https://le0mkr.github.io/WebEngineering/ueber.html): Idee, Team, Datenquelle und ein Formular für Themenvorschläge
+
+## Datenquelle
+
+- [API des Art Institute of Chicago](https://api.artic.edu/docs/): öffentliche Schnittstelle, aus der Artwell die Werkdaten bezieht
