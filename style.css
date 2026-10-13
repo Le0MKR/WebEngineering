@@ -1,44 +1,107 @@
-/* Alles an einer Stelle einstellbar – ab Termin 3 füllt ihr das hier aus. */
-:root {
-  --bg: #ffffff;
-  --text: #1f1f1f;
-  --akzent: #0000ff;
-  --flaeche: #eef0fb;
-  --radius: 12px;
-  --abstand: 1rem;
-}
+/* Artwell: ein Stylesheet für alle Seiten.
+   Alle Farben, Abstände und Schriftgrößen stehen als Variablen in :root.
+   Weiter unten werden nur diese Variablen verwendet. */
 
 * { box-sizing: border-box; }
 
+:root {
+  /* Farben */
+  --bg: #f6f4ef;          /* Seitengrund, warmes Papierweiß */
+  --text: #1d1c1a;
+  --text-leise: #57534b;  /* Nebentext, Ränder von Eingabefeldern */
+  --akzent: #8c6a1c;      /* Gold: die eine Akzentfarbe */
+  --flaeche: #fdfcf9;     /* Karten und Formulare */
+  --linie: #d9d5cb;       /* Trennlinien */
+  --raum: #1f3a30;        /* Galeriegrün für die Ausstellung der Woche */
+  --auf-raum: #f3efe4;    /* Text auf Galeriegrün */
+
+  /* Abstände und Formen */
+  --abstand: 1rem;
+  --radius: 4px;
+
+  /* Schrift: genau drei Größen */
+  --schrift-klein: 0.875rem;
+  --schrift: 1.0625rem;
+  --schrift-gross: 1.75rem;
+  --schrift-serif: "Literata", "Iowan Old Style", "Palatino Linotype", Palatino, Georgia, serif;
+  --schrift-sans: system-ui, "Segoe UI", Roboto, Arial, sans-serif;
+}
+
+/* --- Grundlagen ---------------------------------------------------- */
+
 body {
   margin: 0;
-  font-family: system-ui, "Segoe UI", sans-serif;
-  font-size: 1rem;
-  line-height: 1.5;
+  font-family: var(--schrift-serif);
+  font-size: var(--schrift);
+  line-height: 1.6;
   color: var(--text);
   background: var(--bg);
 }
 
+h1,
+h2,
+h3 {
+  margin: 0 0 var(--abstand);
+  line-height: 1.2;
+}
+
+h1,
+h2 {
+  font-size: var(--schrift-gross);
+}
+
+h1 { font-weight: 600; }
+h2 { font-weight: 400; }
+
+h3 {
+  margin-top: calc(var(--abstand) * 2);
+  font-size: var(--schrift);
+  font-weight: 600;
+}
+
+p,
+ul,
+ol {
+  margin: 0 0 var(--abstand);
+}
+
+small {
+  font-family: var(--schrift-sans);
+  font-size: var(--schrift-klein);
+  color: var(--text-leise);
+}
+
+a {
+  color: var(--akzent);
+  text-underline-offset: 0.2em;
+}
+
+a:hover { color: var(--text); }
+
+/* --- Layout -------------------------------------------------------- */
+
 main {
   max-width: 65ch;
   margin-inline: auto;
-  padding: var(--abstand);
+  padding: calc(var(--abstand) * 2) var(--abstand) calc(var(--abstand) * 4);
 }
 
-nav ul {
-  display: flex;
-  flex-wrap: wrap;
-  gap: var(--abstand);
-  margin: 0;
-  padding: var(--abstand);
-  list-style: none;
-  background: var(--flaeche);
+/* Jeder Abschnitt beginnt mit einer Linie und etwas Luft. */
+main > section {
+  margin-top: calc(var(--abstand) * 3);
+  padding-top: calc(var(--abstand) * 2);
+  border-top: 1px solid var(--linie);
 }
-
-a { color: var(--akzent); }
 
 footer {
-  padding: var(--abstand);
-  font-size: .875rem;
-  color: #555;
+  padding: calc(var(--abstand) * 2) var(--abstand);
+  border-top: 1px solid var(--linie);
+  font-family: var(--schrift-sans);
+  font-size: var(--schrift-klein);
+  color: var(--text-leise);
+}
+
+footer p {
+  max-width: 65ch;
+  margin: 0 auto calc(var(--abstand) / 2);
 }
