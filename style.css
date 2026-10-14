@@ -246,3 +246,70 @@ button:hover {
   background: var(--akzent);
   border-color: var(--akzent);
 }
+
+/* --- Ausstellung der Woche: der grüne Raum ------------------------- */
+
+main > .room {
+  padding: calc(var(--abstand) * 2);
+  color: var(--auf-raum);
+  background: var(--raum);
+  border-top: 0;
+  border-radius: var(--radius);
+}
+
+.room a { color: var(--auf-raum); }
+
+.room :focus-visible { outline-color: var(--auf-raum); }
+
+/* --- Karten für die Themen ----------------------------------------- */
+
+.theme-list {
+  display: grid;
+  gap: calc(var(--abstand) * 1.5);
+  padding: 0;
+  list-style: none;
+}
+
+.theme-list article {
+  position: relative; /* Bezugspunkt für das Badge */
+  padding: calc(var(--abstand) * 1.5);
+  background: var(--flaeche);
+  border: 1px solid var(--linie);
+  border-radius: var(--radius);
+}
+
+.theme-list h3 { margin-top: 0; }
+
+.theme-list p:last-child { margin-bottom: 0; }
+
+/* Kleines Schild, das auf der oberen rechten Ecke der Karte sitzt. */
+.badge {
+  position: absolute;
+  top: 0;
+  right: var(--abstand);
+  margin: 0;
+  padding: 0 calc(var(--abstand) / 2);
+  font-family: var(--schrift-sans);
+  font-size: var(--schrift-klein);
+  font-weight: 600;
+  color: var(--bg);
+  background: var(--akzent);
+  border-radius: var(--radius);
+  transform: translateY(-50%);
+}
+
+/* --- Dunkelmodus: nur die Farbwerte tauschen ----------------------- */
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    color-scheme: dark;
+    --bg: #121412;
+    --text: #ebe7dd;
+    --text-leise: #aba79b;
+    --akzent: #d9b866;
+    --flaeche: #1a1d1a;
+    --linie: #2d312c;
+    --raum: #1b3329;
+    --auf-raum: #f3efe4;
+  }
+}
