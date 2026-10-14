@@ -105,3 +105,144 @@ footer p {
   max-width: 65ch;
   margin: 0 auto calc(var(--abstand) / 2);
 }
+
+/* --- Tastatur: Fokus und Skip-Link --------------------------------- */
+
+/* Der Fokusrahmen bleibt, er bekommt nur die Akzentfarbe. */
+:focus-visible {
+  outline: 2px solid var(--akzent);
+  outline-offset: 3px;
+}
+
+/* Unsichtbar, bis man mit Tab darauf landet. */
+.skip-link {
+  position: absolute;
+  top: var(--abstand);
+  left: var(--abstand);
+  z-index: 20;
+  padding: calc(var(--abstand) / 2) var(--abstand);
+  font-family: var(--schrift-sans);
+  color: var(--bg);
+  background: var(--text);
+  border-radius: var(--radius);
+  transform: translateY(-300%);
+}
+
+.skip-link:focus-visible {
+  color: var(--bg);
+  transform: none;
+}
+
+/* --- Kopf und Navigation ------------------------------------------- */
+
+.site-header {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0 var(--abstand);
+  padding: calc(var(--abstand) / 2) var(--abstand);
+  background: var(--bg);
+  border-bottom: 1px solid var(--linie);
+}
+
+.site-header__home {
+  font-weight: 600;
+  color: var(--text);
+  text-decoration: none;
+}
+
+.site-nav {
+  display: flex;
+  flex-wrap: wrap;
+  gap: calc(var(--abstand) / 4);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.site-nav a {
+  display: block;
+  padding: calc(var(--abstand) / 2) calc(var(--abstand) * 0.75);
+  font-family: var(--schrift-sans);
+  font-size: var(--schrift-klein);
+  color: var(--text);
+  text-decoration: none;
+  border-bottom: 2px solid transparent;
+  border-radius: var(--radius) var(--radius) 0 0;
+}
+
+.site-nav a:hover {
+  background: var(--flaeche);
+  border-bottom-color: var(--text-leise);
+}
+
+.site-nav a:focus-visible {
+  background: var(--flaeche);
+  outline-offset: 0;
+}
+
+/* Die aktuelle Seite trägt die goldene Linie. */
+.site-nav a[aria-current="page"] {
+  border-bottom-color: var(--akzent);
+}
+
+/* Sprungziele rutschen nicht unter den klebenden Kopf. */
+main,
+[id] {
+  scroll-margin-top: calc(var(--abstand) * 5);
+}
+
+/* --- Formular ------------------------------------------------------ */
+
+form {
+  display: grid;
+  gap: var(--abstand);
+  margin-bottom: var(--abstand);
+  padding: calc(var(--abstand) * 1.5);
+  background: var(--flaeche);
+  border: 1px solid var(--linie);
+  border-radius: var(--radius);
+}
+
+form p { margin: 0; }
+
+label {
+  font-family: var(--schrift-sans);
+  font-size: var(--schrift-klein);
+  font-weight: 600;
+}
+
+input,
+textarea {
+  width: 100%;
+  padding: calc(var(--abstand) / 2) calc(var(--abstand) * 0.75);
+  font: inherit;
+  color: var(--text);
+  background: var(--bg);
+  border: 1px solid var(--text-leise);
+  border-radius: var(--radius);
+}
+
+input[type="number"] { width: calc(var(--abstand) * 8); }
+
+textarea { resize: vertical; }
+
+button {
+  padding: calc(var(--abstand) / 2) calc(var(--abstand) * 1.5);
+  font-family: var(--schrift-sans);
+  font-size: var(--schrift);
+  color: var(--bg);
+  background: var(--text);
+  border: 1px solid var(--text);
+  border-radius: var(--radius);
+  cursor: pointer;
+}
+
+button:hover {
+  background: var(--akzent);
+  border-color: var(--akzent);
+}
