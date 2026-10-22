@@ -18,6 +18,7 @@
   /* Abstände und Formen */
   --abstand: 1rem;
   --radius: 4px;
+  --seitenbreite: 72rem;  /* breite Seiten wie die Themenübersicht */
 
   /* Schrift: genau drei Größen */
   --schrift-klein: 0.875rem;
@@ -78,13 +79,21 @@ a {
 
 a:hover { color: var(--text); }
 
-/* --- Layout -------------------------------------------------------- */
+/* --- Layout (mobile first) ----------------------------------------- */
+
+/* Grundlage ist die schmale Ansicht; breitere Fenster erweitern sie unten
+   per min-width. */
 
 main {
   max-width: 65ch;
   margin-inline: auto;
   padding: calc(var(--abstand) * 2) var(--abstand) calc(var(--abstand) * 4);
 }
+
+/* Seiten mit Raster dürfen breiter werden, Lesetext bleibt schmal. */
+main.wide { max-width: var(--seitenbreite); }
+
+main.wide p { max-width: 65ch; }
 
 /* Jeder Abschnitt beginnt mit einer Linie und etwas Luft. */
 main > section {
@@ -102,8 +111,26 @@ footer {
 }
 
 footer p {
-  max-width: 65ch;
-  margin: 0 auto calc(var(--abstand) / 2);
+  margin: 0 0 calc(var(--abstand) / 2);
+}
+
+@media (min-width: 48rem) {
+  main { padding-top: calc(var(--abstand) * 3); }
+
+  .site-header,
+  footer {
+    padding-inline: calc(var(--abstand) * 2);
+  }
+
+  /* Ab Tablet-Breite stehen die beiden Zeilen im Fuß nebeneinander. */
+  footer {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: var(--abstand);
+  }
+
+  footer p { margin: 0; }
 }
 
 /* --- Tastatur: Fokus und Skip-Link --------------------------------- */
@@ -133,7 +160,7 @@ footer p {
   transform: none;
 }
 
-/* --- Kopf und Navigation ------------------------------------------- */
+/* --- Komponente 3: Navbar (Kopf und Navigation) ------------------ */
 
 .site-header {
   position: sticky;
@@ -202,10 +229,6 @@ form {
   display: grid;
   gap: var(--abstand);
   margin-bottom: var(--abstand);
-  padding: calc(var(--abstand) * 1.5);
-  background: var(--flaeche);
-  border: 1px solid var(--linie);
-  border-radius: var(--radius);
 }
 
 form p { margin: 0; }
@@ -231,46 +254,46 @@ input[type="number"] { width: calc(var(--abstand) * 8); }
 
 textarea { resize: vertical; }
 
-button {
+/* --- Komponente 1: Button ------------------------------------------ */
+
+/* Für <button> und für Links, die wie ein Button aussehen sollen. */
+.button {
+  display: inline-block;
   padding: calc(var(--abstand) / 2) calc(var(--abstand) * 1.5);
   font-family: var(--schrift-sans);
-  font-size: var(--schrift);
+  font-size: var(--schrift-klein);
+  font-weight: 600;
   color: var(--bg);
+  text-decoration: none;
   background: var(--text);
   border: 1px solid var(--text);
   border-radius: var(--radius);
   cursor: pointer;
 }
 
-button:hover {
+.button:hover {
+  color: var(--bg);
   background: var(--akzent);
   border-color: var(--akzent);
 }
 
-/* --- Ausstellung der Woche: der grüne Raum ------------------------- */
-
-main > .room {
-  padding: calc(var(--abstand) * 2);
-  color: var(--auf-raum);
-  background: var(--raum);
-  border-top: 0;
-  border-radius: var(--radius);
+/* Zweitrangige Aktion: gleiche Maße, nur umrandet. */
+.button--leise {
+  color: var(--text);
+  background: transparent;
 }
 
-.room a { color: var(--auf-raum); }
-
-.room :focus-visible { outline-color: var(--auf-raum); }
-
-/* --- Karten für die Themen ----------------------------------------- */
-
-.theme-list {
-  display: grid;
-  gap: calc(var(--abstand) * 1.5);
-  padding: 0;
-  list-style: none;
+/* Button-Leiste: nebeneinander, bei wenig Platz untereinander. */
+.button-bar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: calc(var(--abstand) / 2);
 }
 
-.theme-list article {
+/* --- Komponente 2: Karte ------------------------------------------- */
+
+/* Themenkarten, Formular und der grüne Kasten teilen Abstand, Rand und Radius. */
+.card {
   position: relative; /* Bezugspunkt für das Badge */
   padding: calc(var(--abstand) * 1.5);
   background: var(--flaeche);
@@ -278,9 +301,37 @@ main > .room {
   border-radius: var(--radius);
 }
 
-.theme-list h3 { margin-top: 0; }
+/* Das Badge zählt nicht mit: Die Überschrift darunter rückt trotzdem nach oben. */
+.card > :first-child,
+.card > .badge + * { margin-top: 0; }
 
-.theme-list p:last-child { margin-bottom: 0; }
+.card > :last-child { margin-bottom: 0; }
+
+/* --- Ausstellung der Woche: der grüne Raum ------------------------- */
+
+main > .room {
+  color: var(--auf-raum);
+  background: var(--raum);
+  border-color: var(--raum);
+}
+
+.room a { color: var(--auf-raum); }
+
+.room :focus-visible { outline-color: var(--auf-raum); }
+
+/* --- Themenübersicht ---------------------------------------------- */
+
+/* Grid ohne Media Query: so viele Spalten, wie Karten mit mindestens
+   17rem nebeneinander passen. Bei 360 px eine, bei 768 px zwei, bei 1280 px drei. */
+.theme-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 17rem), 1fr));
+  gap: calc(var(--abstand) * 1.5);
+  padding: 0;
+  list-style: none;
+}
+
+.theme-list > li { display: grid; } /* Karten einer Zeile werden gleich hoch */
 
 /* Kleines Schild, das auf der oberen rechten Ecke der Karte sitzt. */
 .badge {

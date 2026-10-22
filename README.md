@@ -70,3 +70,13 @@ Das JSON-LD im `head` der Startseite wurde mit dem [Rich Results Test von Google
 Die Links in der Navigation werden von zwei Regeln getroffen: `a { color: var(--akzent); }` und `.site-nav a { color: var(--text); }`.
 Es gewinnt `.site-nav a`; in den DevTools ist `color` bei der Regel `a` durchgestrichen, die Links sind also textfarben und nicht golden.
 Der Grund ist die Spezifität: `.site-nav a` hat eine Klasse und ein Element (0,1,1), `a` nur ein Element (0,0,1). Die Reihenfolge im Stylesheet spielt dabei keine Rolle.
+
+## Komponenten
+
+Drei Bausteine wiederholen sich im Projekt. Alle nutzen denselben Radius (`--radius`) und die Farben aus `:root`; jede Karte hat denselben Innenabstand (1,5 × `--abstand`), jeder Button dieselbe Größe.
+
+| Komponente | Klasse in `style.css` | Wo sie vorkommt |
+| --- | --- | --- |
+| Button | `.button`, zweitrangig `.button--leise`, mehrere in `.button-bar` | „Vorschlag absenden“ in `ueber.html`, „Alle Ausstellungen ansehen“ und „Mehr über das Projekt“ in `index.html`, beide Links in `danke.html` |
+| Karte | `.card` | 15 Themenkarten in `ausstellungen.html`, Formular in `ueber.html`, grüner Kasten „Ausstellung der Woche“ in `index.html` (zusätzlich `.room`) |
+| Navbar | `.site-header` mit `.site-nav` | Kopf aller vier Seiten |
