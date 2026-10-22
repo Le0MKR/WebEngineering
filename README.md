@@ -37,11 +37,16 @@ Dokumentation: https://api.artic.edu/docs/
 
 ## Lokal starten
 
-In VS Code mit Live Server öffnen – oder:
+Seit Blatt 4 läuft das Projekt mit Vite. Voraussetzung ist Node.js (aktuelle LTS-Version).
 
 ```bash
-npx serve .
+npm install      # einmalig: lädt Vite und Tailwind nach node_modules/
+npm run dev      # Entwicklungsserver, Adresse steht im Terminal
+npm run build    # fertige Seite nach dist/
+npm run preview  # dist/ lokal ansehen
 ```
+
+Hochgeladen wird nur der Inhalt von `dist/`. `node_modules/` und `dist/` stehen in `.gitignore`; `package-lock.json` ist im Repository, damit alle dieselben Versionen installieren.
 
 ## Technik
 
@@ -83,7 +88,7 @@ Drei Bausteine wiederholen sich im Projekt. Alle nutzen denselben Radius (`--rad
 
 ## Tailwind-Vergleich
 
-Auf `ausstellungen.html` steht die Karte „Impressionismus“ zweimal: oben unter „Aktuelle Ausstellung“ mit Tailwind-Klassen, unten in der Liste mit eigenem CSS (`.card`, `.badge`). Beide sehen gleich aus. Tailwind kommt über das Play CDN und nur auf dieser Seite.
+Auf `ausstellungen.html` steht die Karte „Impressionismus“ zweimal: oben unter „Aktuelle Ausstellung“ mit Tailwind-Klassen, unten in der Liste mit eigenem CSS (`.card`, `.badge`). Beide sehen gleich aus. Tailwind kam in Blatt 4 zuerst über das Play CDN und wird jetzt von Vite gebaut (siehe „Build mit Vite und Tailwind“).
 
 | Tailwind-Klasse | CSS-Eigenschaft | Eigenes CSS |
 | --- | --- | --- |
@@ -101,6 +106,14 @@ Auf `ausstellungen.html` steht die Karte „Impressionismus“ zweimal: oben unt
 | `mt-0`, `mb-4`, `mb-0` | `margin-top: 0`, `margin-bottom: 1rem`, `margin-bottom: 0` | `h3`, `p`, `.card > :last-child` |
 | `leading-[1.2]` | `line-height: 1.2` | `h3` |
 
-Die Namen `flaeche`, `linie`, `akzent`, `grund`, `karte`, `ui`, `klein` und `normal` sind keine Tailwind-Standardwerte. Sie werden im `<style type="text/tailwindcss">` im `head` von `ausstellungen.html` mit `@theme` auf unsere Variablen gelegt. So nutzen beide Karten dieselben Werte, und der Dunkelmodus gilt auch für die Tailwind-Karte.
+Die Namen `flaeche`, `linie`, `akzent`, `grund`, `karte`, `ui`, `klein` und `normal` sind keine Tailwind-Standardwerte. Sie werden in `style.css` mit `@theme` auf unsere Variablen gelegt. So nutzen beide Karten dieselben Werte, und der Dunkelmodus gilt auch für die Tailwind-Karte.
 
 Damit beides zusammenpasst, steht `style.css` in der Ebene `@layer eigen`: Tailwinds Grundstile verlieren gegen unser CSS, Tailwinds Utility-Klassen gewinnen.
+
+## Build mit Vite und Tailwind
+
+`npm run build` erzeugt in `dist/` die vier HTML-Seiten, `robots.txt`, `sitemap.xml` und `llms.txt` (aus `public/`) sowie in `dist/assets/` eine CSS- und eine JavaScript-Datei mit einem Hash im Namen.
+
+Die CSS-Datei ist **11,6 kB groß, komprimiert (gzip) 3,3 kB**. Davon stammen etwa 6,4 kB von Tailwind, der Rest ist unser eigenes CSS.
+
+Sie bleibt so klein, obwohl Tailwind tausende Klassen kennt, weil Tailwind beim Build die Projektdateien durchsucht und nur die Klassen erzeugt, die dort wirklich vorkommen. Bei uns sind das gut 20 Klassen der Vergleichskarte. Dazu kommen Tailwinds Grundstile (Preflight) und die verwendeten Theme-Variablen. Außerdem entfernt Vite beim Build Kommentare und Leerzeichen.

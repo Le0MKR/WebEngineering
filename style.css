@@ -8,6 +8,21 @@
 
 @layer theme, base, eigen, components, utilities;
 
+/* Tailwind kommt seit Blatt 4 aus dem Vite-Build statt vom CDN. */
+@import "tailwindcss";
+
+/* Tailwind-Namen für unsere Variablen (vorher im head von ausstellungen.html) */
+@theme inline {
+  --color-grund: var(--bg);
+  --color-flaeche: var(--flaeche);
+  --color-linie: var(--linie);
+  --color-akzent: var(--akzent);
+  --radius-karte: var(--radius);
+  --font-ui: var(--schrift-sans);
+  --text-klein: var(--schrift-klein);
+  --text-normal: var(--schrift);
+}
+
 @layer eigen {
   * { box-sizing: border-box; }
 

@@ -7,22 +7,7 @@
   <meta name="description" content="Alle 15 Ausstellungsthemen von Artwell im Überblick, von Impressionismus bis Frühe Fotografie.">
   <link rel="canonical" href="https://le0mkr.github.io/WebEngineering/ausstellungen.html">
   <link rel="stylesheet" href="style.css">
-  <script src="app.js" defer></script>
-  <!-- Tailwind über das Play CDN, nur auf dieser Seite -->
-  <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4.3.3"></script>
-  <style type="text/tailwindcss">
-    /* Tailwind-Namen für die Variablen aus style.css, damit die Karte dieselben Werte nutzt */
-    @theme inline {
-      --color-grund: var(--bg);
-      --color-flaeche: var(--flaeche);
-      --color-linie: var(--linie);
-      --color-akzent: var(--akzent);
-      --radius-karte: var(--radius);
-      --font-ui: var(--schrift-sans);
-      --text-klein: var(--schrift-klein);
-      --text-normal: var(--schrift);
-    }
-  </style>
+  <script type="module" src="app.js"></script>
 </head>
 <body>
   <a class="skip-link" href="#inhalt">Zum Inhalt springen</a>
