@@ -8,6 +8,21 @@
   <link rel="canonical" href="https://le0mkr.github.io/WebEngineering/ausstellungen.html">
   <link rel="stylesheet" href="style.css">
   <script src="app.js" defer></script>
+  <!-- Tailwind über das Play CDN, nur auf dieser Seite -->
+  <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4.3.3"></script>
+  <style type="text/tailwindcss">
+    /* Tailwind-Namen für die Variablen aus style.css, damit die Karte dieselben Werte nutzt */
+    @theme inline {
+      --color-grund: var(--bg);
+      --color-flaeche: var(--flaeche);
+      --color-linie: var(--linie);
+      --color-akzent: var(--akzent);
+      --radius-karte: var(--radius);
+      --font-ui: var(--schrift-sans);
+      --text-klein: var(--schrift-klein);
+      --text-normal: var(--schrift);
+    }
+  </style>
 </head>
 <body>
   <a class="skip-link" href="#inhalt">Zum Inhalt springen</a>
@@ -30,6 +45,13 @@
     <section aria-labelledby="aktuell">
       <h2 id="aktuell">Aktuelle Ausstellung</h2>
       <p>Diese Woche läuft <a href="#impressionismus">Impressionismus</a>.</p>
+
+      <!-- Dieselbe Karte wie unten in der Liste, hier nur mit Tailwind-Klassen statt .card und .badge -->
+      <article class="relative mt-6 rounded-karte border border-linie bg-flaeche p-6">
+        <p class="absolute top-0 right-4 m-0 -translate-y-1/2 rounded-karte bg-akzent px-2 font-ui text-klein font-semibold text-grund">Diese Woche</p>
+        <h3 class="mt-0 mb-4 text-normal leading-[1.2] font-semibold">Impressionismus</h3>
+        <p class="mb-0">Licht, Farbe und der flüchtige Augenblick: Die Impressionisten malten nicht, was sie über die Welt wussten, sondern wie sie sie in einem Moment sahen. Das Art Institute besitzt eine der bedeutendsten Sammlungen dieser Bewegung außerhalb Frankreichs.</p>
+      </article>
     </section>
 
     <section aria-labelledby="themen">

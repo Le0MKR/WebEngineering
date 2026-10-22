@@ -80,3 +80,27 @@ Drei Bausteine wiederholen sich im Projekt. Alle nutzen denselben Radius (`--rad
 | Button | `.button`, zweitrangig `.button--leise`, mehrere in `.button-bar` | „Vorschlag absenden“ in `ueber.html`, „Alle Ausstellungen ansehen“ und „Mehr über das Projekt“ in `index.html`, beide Links in `danke.html` |
 | Karte | `.card` | 15 Themenkarten in `ausstellungen.html`, Formular in `ueber.html`, grüner Kasten „Ausstellung der Woche“ in `index.html` (zusätzlich `.room`) |
 | Navbar | `.site-header` mit `.site-nav` | Kopf aller vier Seiten |
+
+## Tailwind-Vergleich
+
+Auf `ausstellungen.html` steht die Karte „Impressionismus“ zweimal: oben unter „Aktuelle Ausstellung“ mit Tailwind-Klassen, unten in der Liste mit eigenem CSS (`.card`, `.badge`). Beide sehen gleich aus. Tailwind kommt über das Play CDN und nur auf dieser Seite.
+
+| Tailwind-Klasse | CSS-Eigenschaft | Eigenes CSS |
+| --- | --- | --- |
+| `relative` | `position: relative` | `.card` |
+| `rounded-karte` | `border-radius: var(--radius)` | `.card`, `.badge` |
+| `border` | `border-width: 1px; border-style: solid` | `.card` |
+| `border-linie` | `border-color: var(--linie)` | `.card` |
+| `bg-flaeche` | `background-color: var(--flaeche)` | `.card` |
+| `p-6` | `padding: 1.5rem` | `.card` (1,5 × `--abstand`) |
+| `absolute top-0 right-4` | `position: absolute; top: 0; right: 1rem` | `.badge` |
+| `-translate-y-1/2` | `translate: 0 -50%` | `.badge` (`transform: translateY(-50%)`) |
+| `px-2` | `padding-inline: 0.5rem` | `.badge` |
+| `bg-akzent`, `text-grund` | `background-color: var(--akzent)`, `color: var(--bg)` | `.badge` |
+| `font-ui`, `text-klein`, `font-semibold` | `font-family: var(--schrift-sans)`, `font-size: var(--schrift-klein)`, `font-weight: 600` | `.badge` |
+| `mt-0`, `mb-4`, `mb-0` | `margin-top: 0`, `margin-bottom: 1rem`, `margin-bottom: 0` | `h3`, `p`, `.card > :last-child` |
+| `leading-[1.2]` | `line-height: 1.2` | `h3` |
+
+Die Namen `flaeche`, `linie`, `akzent`, `grund`, `karte`, `ui`, `klein` und `normal` sind keine Tailwind-Standardwerte. Sie werden im `<style type="text/tailwindcss">` im `head` von `ausstellungen.html` mit `@theme` auf unsere Variablen gelegt. So nutzen beide Karten dieselben Werte, und der Dunkelmodus gilt auch für die Tailwind-Karte.
+
+Damit beides zusammenpasst, steht `style.css` in der Ebene `@layer eigen`: Tailwinds Grundstile verlieren gegen unser CSS, Tailwinds Utility-Klassen gewinnen.

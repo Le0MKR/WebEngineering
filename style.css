@@ -1,366 +1,384 @@
 /* Artwell: ein Stylesheet für alle Seiten.
    Alle Farben, Abstände und Schriftgrößen stehen als Variablen in :root.
-   Weiter unten werden nur diese Variablen verwendet. */
+   Weiter unten werden nur diese Variablen verwendet.
 
-* { box-sizing: border-box; }
+   Alles steht in der Ebene (Layer) „eigen“. Die Reihenfolge der Ebenen legt
+   fest, wer gewinnt: Tailwinds Grundstile (base) verlieren gegen unser CSS,
+   Tailwinds Utility-Klassen (utilities) gewinnen gegen unser CSS. */
 
-:root {
-  /* Farben */
-  --bg: #f6f4ef;          /* Seitengrund, warmes Papierweiß */
-  --text: #1d1c1a;
-  --text-leise: #57534b;  /* Nebentext, Ränder von Eingabefeldern */
-  --akzent: #8c6a1c;      /* Gold: die eine Akzentfarbe */
-  --flaeche: #fdfcf9;     /* Karten und Formulare */
-  --linie: #d9d5cb;       /* Trennlinien */
-  --raum: #1f3a30;        /* Galeriegrün für die Ausstellung der Woche */
-  --auf-raum: #f3efe4;    /* Text auf Galeriegrün */
+@layer theme, base, eigen, components, utilities;
 
-  /* Abstände und Formen */
-  --abstand: 1rem;
-  --radius: 4px;
-  --seitenbreite: 72rem;  /* breite Seiten wie die Themenübersicht */
+@layer eigen {
+  * { box-sizing: border-box; }
 
-  /* Schrift: genau drei Größen */
-  --schrift-klein: 0.875rem;
-  --schrift: 1.0625rem;
-  --schrift-gross: 1.75rem;
-  --schrift-serif: "Literata", "Iowan Old Style", "Palatino Linotype", Palatino, Georgia, serif;
-  --schrift-sans: system-ui, "Segoe UI", Roboto, Arial, sans-serif;
-}
+  :root {
+    /* Farben */
+    --bg: #f6f4ef;          /* Seitengrund, warmes Papierweiß */
+    --text: #1d1c1a;
+    --text-leise: #57534b;  /* Nebentext, Ränder von Eingabefeldern */
+    --akzent: #8c6a1c;      /* Gold: die eine Akzentfarbe */
+    --flaeche: #fdfcf9;     /* Karten und Formulare */
+    --linie: #d9d5cb;       /* Trennlinien */
+    --raum: #1f3a30;        /* Galeriegrün für die Ausstellung der Woche */
+    --auf-raum: #f3efe4;    /* Text auf Galeriegrün */
 
-/* --- Grundlagen ---------------------------------------------------- */
+    /* Abstände und Formen */
+    --abstand: 1rem;
+    --radius: 4px;
+    --seitenbreite: 72rem;  /* breite Seiten wie die Themenübersicht */
 
-body {
-  margin: 0;
-  font-family: var(--schrift-serif);
-  font-size: var(--schrift);
-  line-height: 1.6;
-  color: var(--text);
-  background: var(--bg);
-}
-
-h1,
-h2,
-h3 {
-  margin: 0 0 var(--abstand);
-  line-height: 1.2;
-}
-
-h1,
-h2 {
-  font-size: var(--schrift-gross);
-}
-
-h1 { font-weight: 600; }
-h2 { font-weight: 400; }
-
-h3 {
-  margin-top: calc(var(--abstand) * 2);
-  font-size: var(--schrift);
-  font-weight: 600;
-}
-
-p,
-ul,
-ol {
-  margin: 0 0 var(--abstand);
-}
-
-small {
-  font-family: var(--schrift-sans);
-  font-size: var(--schrift-klein);
-  color: var(--text-leise);
-}
-
-a {
-  color: var(--akzent);
-  text-underline-offset: 0.2em;
-}
-
-a:hover { color: var(--text); }
-
-/* --- Layout (mobile first) ----------------------------------------- */
-
-/* Grundlage ist die schmale Ansicht; breitere Fenster erweitern sie unten
-   per min-width. */
-
-main {
-  max-width: 65ch;
-  margin-inline: auto;
-  padding: calc(var(--abstand) * 2) var(--abstand) calc(var(--abstand) * 4);
-}
-
-/* Seiten mit Raster dürfen breiter werden, Lesetext bleibt schmal. */
-main.wide { max-width: var(--seitenbreite); }
-
-main.wide p { max-width: 65ch; }
-
-/* Jeder Abschnitt beginnt mit einer Linie und etwas Luft. */
-main > section {
-  margin-top: calc(var(--abstand) * 3);
-  padding-top: calc(var(--abstand) * 2);
-  border-top: 1px solid var(--linie);
-}
-
-footer {
-  padding: calc(var(--abstand) * 2) var(--abstand);
-  border-top: 1px solid var(--linie);
-  font-family: var(--schrift-sans);
-  font-size: var(--schrift-klein);
-  color: var(--text-leise);
-}
-
-footer p {
-  margin: 0 0 calc(var(--abstand) / 2);
-}
-
-@media (min-width: 48rem) {
-  main { padding-top: calc(var(--abstand) * 3); }
-
-  .site-header,
-  footer {
-    padding-inline: calc(var(--abstand) * 2);
+    /* Schrift: genau drei Größen */
+    --schrift-klein: 0.875rem;
+    --schrift: 1.0625rem;
+    --schrift-gross: 1.75rem;
+    --schrift-serif: "Literata", "Iowan Old Style", "Palatino Linotype", Palatino, Georgia, serif;
+    --schrift-sans: system-ui, "Segoe UI", Roboto, Arial, sans-serif;
   }
 
-  /* Ab Tablet-Breite stehen die beiden Zeilen im Fuß nebeneinander. */
+  /* --- Grundlagen ---------------------------------------------------- */
+
+  body {
+    margin: 0;
+    font-family: var(--schrift-serif);
+    font-size: var(--schrift);
+    line-height: 1.6;
+    color: var(--text);
+    background: var(--bg);
+  }
+
+  h1,
+  h2,
+  h3 {
+    margin: 0 0 var(--abstand);
+    line-height: 1.2;
+  }
+
+  h1,
+  h2 {
+    font-size: var(--schrift-gross);
+  }
+
+  h1 { font-weight: 600; }
+  h2 { font-weight: 400; }
+
+  h3 {
+    margin-top: calc(var(--abstand) * 2);
+    font-size: var(--schrift);
+    font-weight: 600;
+  }
+
+  p,
+  ul,
+  ol {
+    margin: 0 0 var(--abstand);
+  }
+
+  /* Tailwind setzt Listen auf „keine Aufzählungszeichen“ zurück; hier kommen sie wieder. */
+  ul,
+  ol {
+    padding-left: calc(var(--abstand) * 1.5);
+  }
+
+  ul { list-style: disc; }
+  ol { list-style: decimal; }
+
+  small {
+    font-family: var(--schrift-sans);
+    font-size: var(--schrift-klein);
+    color: var(--text-leise);
+  }
+
+  a {
+    color: var(--akzent);
+    text-decoration: underline;
+    text-underline-offset: 0.2em;
+  }
+
+  a:hover { color: var(--text); }
+
+  /* --- Layout (mobile first) ----------------------------------------- */
+
+  /* Grundlage ist die schmale Ansicht; breitere Fenster erweitern sie unten
+     per min-width. */
+
+  main {
+    max-width: 65ch;
+    margin-inline: auto;
+    padding: calc(var(--abstand) * 2) var(--abstand) calc(var(--abstand) * 4);
+  }
+
+  /* Seiten mit Raster dürfen breiter werden, Lesetext bleibt schmal. */
+  main.wide { max-width: var(--seitenbreite); }
+
+  main.wide p { max-width: 65ch; }
+
+  /* Jeder Abschnitt beginnt mit einer Linie und etwas Luft. */
+  main > section {
+    margin-top: calc(var(--abstand) * 3);
+    padding-top: calc(var(--abstand) * 2);
+    border-top: 1px solid var(--linie);
+  }
+
   footer {
+    padding: calc(var(--abstand) * 2) var(--abstand);
+    border-top: 1px solid var(--linie);
+    font-family: var(--schrift-sans);
+    font-size: var(--schrift-klein);
+    color: var(--text-leise);
+  }
+
+  footer p {
+    margin: 0 0 calc(var(--abstand) / 2);
+  }
+
+  @media (min-width: 48rem) {
+    main { padding-top: calc(var(--abstand) * 3); }
+
+    .site-header,
+    footer {
+      padding-inline: calc(var(--abstand) * 2);
+    }
+
+    /* Ab Tablet-Breite stehen die beiden Zeilen im Fuß nebeneinander. */
+    footer {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      gap: var(--abstand);
+    }
+
+    footer p { margin: 0; }
+  }
+
+  /* --- Tastatur: Fokus und Skip-Link --------------------------------- */
+
+  /* Der Fokusrahmen bleibt, er bekommt nur die Akzentfarbe. */
+  :focus-visible {
+    outline: 2px solid var(--akzent);
+    outline-offset: 3px;
+  }
+
+  /* Unsichtbar, bis man mit Tab darauf landet. */
+  .skip-link {
+    position: absolute;
+    top: var(--abstand);
+    left: var(--abstand);
+    z-index: 20;
+    padding: calc(var(--abstand) / 2) var(--abstand);
+    font-family: var(--schrift-sans);
+    color: var(--bg);
+    background: var(--text);
+    border-radius: var(--radius);
+    transform: translateY(-300%);
+  }
+
+  .skip-link:focus-visible {
+    color: var(--bg);
+    transform: none;
+  }
+
+  /* --- Komponente 3: Navbar (Kopf und Navigation) ------------------ */
+
+  .site-header {
+    position: sticky;
+    top: 0;
+    z-index: 10;
     display: flex;
     flex-wrap: wrap;
+    align-items: center;
     justify-content: space-between;
-    gap: var(--abstand);
+    gap: 0 var(--abstand);
+    padding: calc(var(--abstand) / 2) var(--abstand);
+    background: var(--bg);
+    border-bottom: 1px solid var(--linie);
   }
 
-  footer p { margin: 0; }
-}
+  .site-header__home {
+    font-weight: 600;
+    color: var(--text);
+    text-decoration: none;
+  }
 
-/* --- Tastatur: Fokus und Skip-Link --------------------------------- */
+  .site-nav {
+    display: flex;
+    flex-wrap: wrap;
+    gap: calc(var(--abstand) / 4);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
 
-/* Der Fokusrahmen bleibt, er bekommt nur die Akzentfarbe. */
-:focus-visible {
-  outline: 2px solid var(--akzent);
-  outline-offset: 3px;
-}
+  .site-nav a {
+    display: block;
+    padding: calc(var(--abstand) / 2) calc(var(--abstand) * 0.75);
+    font-family: var(--schrift-sans);
+    font-size: var(--schrift-klein);
+    color: var(--text);
+    text-decoration: none;
+    border-bottom: 2px solid transparent;
+    border-radius: var(--radius) var(--radius) 0 0;
+  }
 
-/* Unsichtbar, bis man mit Tab darauf landet. */
-.skip-link {
-  position: absolute;
-  top: var(--abstand);
-  left: var(--abstand);
-  z-index: 20;
-  padding: calc(var(--abstand) / 2) var(--abstand);
-  font-family: var(--schrift-sans);
-  color: var(--bg);
-  background: var(--text);
-  border-radius: var(--radius);
-  transform: translateY(-300%);
-}
+  .site-nav a:hover {
+    background: var(--flaeche);
+    border-bottom-color: var(--text-leise);
+  }
 
-.skip-link:focus-visible {
-  color: var(--bg);
-  transform: none;
-}
+  .site-nav a:focus-visible {
+    background: var(--flaeche);
+    outline-offset: 0;
+  }
 
-/* --- Komponente 3: Navbar (Kopf und Navigation) ------------------ */
+  /* Die aktuelle Seite trägt die goldene Linie. */
+  .site-nav a[aria-current="page"] {
+    border-bottom-color: var(--akzent);
+  }
 
-.site-header {
-  position: sticky;
-  top: 0;
-  z-index: 10;
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  justify-content: space-between;
-  gap: 0 var(--abstand);
-  padding: calc(var(--abstand) / 2) var(--abstand);
-  background: var(--bg);
-  border-bottom: 1px solid var(--linie);
-}
+  /* Sprungziele rutschen nicht unter den klebenden Kopf. */
+  main,
+  [id] {
+    scroll-margin-top: calc(var(--abstand) * 5);
+  }
 
-.site-header__home {
-  font-weight: 600;
-  color: var(--text);
-  text-decoration: none;
-}
+  /* --- Formular ------------------------------------------------------ */
 
-.site-nav {
-  display: flex;
-  flex-wrap: wrap;
-  gap: calc(var(--abstand) / 4);
-  margin: 0;
-  padding: 0;
-  list-style: none;
-}
+  form {
+    display: grid;
+    gap: var(--abstand);
+    margin-bottom: var(--abstand);
+  }
 
-.site-nav a {
-  display: block;
-  padding: calc(var(--abstand) / 2) calc(var(--abstand) * 0.75);
-  font-family: var(--schrift-sans);
-  font-size: var(--schrift-klein);
-  color: var(--text);
-  text-decoration: none;
-  border-bottom: 2px solid transparent;
-  border-radius: var(--radius) var(--radius) 0 0;
-}
+  form p { margin: 0; }
 
-.site-nav a:hover {
-  background: var(--flaeche);
-  border-bottom-color: var(--text-leise);
-}
+  label {
+    font-family: var(--schrift-sans);
+    font-size: var(--schrift-klein);
+    font-weight: 600;
+  }
 
-.site-nav a:focus-visible {
-  background: var(--flaeche);
-  outline-offset: 0;
-}
+  input,
+  textarea {
+    width: 100%;
+    padding: calc(var(--abstand) / 2) calc(var(--abstand) * 0.75);
+    font: inherit;
+    color: var(--text);
+    background: var(--bg);
+    border: 1px solid var(--text-leise);
+    border-radius: var(--radius);
+  }
 
-/* Die aktuelle Seite trägt die goldene Linie. */
-.site-nav a[aria-current="page"] {
-  border-bottom-color: var(--akzent);
-}
+  input[type="number"] { width: calc(var(--abstand) * 8); }
 
-/* Sprungziele rutschen nicht unter den klebenden Kopf. */
-main,
-[id] {
-  scroll-margin-top: calc(var(--abstand) * 5);
-}
+  textarea { resize: vertical; }
 
-/* --- Formular ------------------------------------------------------ */
+  /* --- Komponente 1: Button ------------------------------------------ */
 
-form {
-  display: grid;
-  gap: var(--abstand);
-  margin-bottom: var(--abstand);
-}
+  /* Für <button> und für Links, die wie ein Button aussehen sollen. */
+  .button {
+    display: inline-block;
+    padding: calc(var(--abstand) / 2) calc(var(--abstand) * 1.5);
+    font-family: var(--schrift-sans);
+    font-size: var(--schrift-klein);
+    font-weight: 600;
+    color: var(--bg);
+    text-decoration: none;
+    background: var(--text);
+    border: 1px solid var(--text);
+    border-radius: var(--radius);
+    cursor: pointer;
+  }
 
-form p { margin: 0; }
+  .button:hover {
+    color: var(--bg);
+    background: var(--akzent);
+    border-color: var(--akzent);
+  }
 
-label {
-  font-family: var(--schrift-sans);
-  font-size: var(--schrift-klein);
-  font-weight: 600;
-}
+  /* Zweitrangige Aktion: gleiche Maße, nur umrandet. */
+  .button--leise {
+    color: var(--text);
+    background: transparent;
+  }
 
-input,
-textarea {
-  width: 100%;
-  padding: calc(var(--abstand) / 2) calc(var(--abstand) * 0.75);
-  font: inherit;
-  color: var(--text);
-  background: var(--bg);
-  border: 1px solid var(--text-leise);
-  border-radius: var(--radius);
-}
+  /* Button-Leiste: nebeneinander, bei wenig Platz untereinander. */
+  .button-bar {
+    display: flex;
+    flex-wrap: wrap;
+    gap: calc(var(--abstand) / 2);
+  }
 
-input[type="number"] { width: calc(var(--abstand) * 8); }
+  /* --- Komponente 2: Karte ------------------------------------------- */
 
-textarea { resize: vertical; }
+  /* Themenkarten, Formular und der grüne Kasten teilen Abstand, Rand und Radius. */
+  .card {
+    position: relative; /* Bezugspunkt für das Badge */
+    padding: calc(var(--abstand) * 1.5);
+    background: var(--flaeche);
+    border: 1px solid var(--linie);
+    border-radius: var(--radius);
+  }
 
-/* --- Komponente 1: Button ------------------------------------------ */
+  /* Das Badge zählt nicht mit: Die Überschrift darunter rückt trotzdem nach oben. */
+  .card > :first-child,
+  .card > .badge + * { margin-top: 0; }
 
-/* Für <button> und für Links, die wie ein Button aussehen sollen. */
-.button {
-  display: inline-block;
-  padding: calc(var(--abstand) / 2) calc(var(--abstand) * 1.5);
-  font-family: var(--schrift-sans);
-  font-size: var(--schrift-klein);
-  font-weight: 600;
-  color: var(--bg);
-  text-decoration: none;
-  background: var(--text);
-  border: 1px solid var(--text);
-  border-radius: var(--radius);
-  cursor: pointer;
-}
+  .card > :last-child { margin-bottom: 0; }
 
-.button:hover {
-  color: var(--bg);
-  background: var(--akzent);
-  border-color: var(--akzent);
-}
+  /* --- Ausstellung der Woche: der grüne Raum ------------------------- */
 
-/* Zweitrangige Aktion: gleiche Maße, nur umrandet. */
-.button--leise {
-  color: var(--text);
-  background: transparent;
-}
+  main > .room {
+    color: var(--auf-raum);
+    background: var(--raum);
+    border-color: var(--raum);
+  }
 
-/* Button-Leiste: nebeneinander, bei wenig Platz untereinander. */
-.button-bar {
-  display: flex;
-  flex-wrap: wrap;
-  gap: calc(var(--abstand) / 2);
-}
+  .room a { color: var(--auf-raum); }
 
-/* --- Komponente 2: Karte ------------------------------------------- */
+  .room :focus-visible { outline-color: var(--auf-raum); }
 
-/* Themenkarten, Formular und der grüne Kasten teilen Abstand, Rand und Radius. */
-.card {
-  position: relative; /* Bezugspunkt für das Badge */
-  padding: calc(var(--abstand) * 1.5);
-  background: var(--flaeche);
-  border: 1px solid var(--linie);
-  border-radius: var(--radius);
-}
+  /* --- Themenübersicht ---------------------------------------------- */
 
-/* Das Badge zählt nicht mit: Die Überschrift darunter rückt trotzdem nach oben. */
-.card > :first-child,
-.card > .badge + * { margin-top: 0; }
+  /* Grid ohne Media Query: so viele Spalten, wie Karten mit mindestens
+     17rem nebeneinander passen. Bei 360 px eine, bei 768 px zwei, bei 1280 px drei. */
+  .theme-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 17rem), 1fr));
+    gap: calc(var(--abstand) * 1.5);
+    padding: 0;
+    list-style: none;
+  }
 
-.card > :last-child { margin-bottom: 0; }
+  .theme-list > li { display: grid; } /* Karten einer Zeile werden gleich hoch */
 
-/* --- Ausstellung der Woche: der grüne Raum ------------------------- */
+  /* Kleines Schild, das auf der oberen rechten Ecke der Karte sitzt. */
+  .badge {
+    position: absolute;
+    top: 0;
+    right: var(--abstand);
+    margin: 0;
+    padding: 0 calc(var(--abstand) / 2);
+    font-family: var(--schrift-sans);
+    font-size: var(--schrift-klein);
+    font-weight: 600;
+    color: var(--bg);
+    background: var(--akzent);
+    border-radius: var(--radius);
+    transform: translateY(-50%);
+  }
 
-main > .room {
-  color: var(--auf-raum);
-  background: var(--raum);
-  border-color: var(--raum);
-}
+  /* --- Dunkelmodus: nur die Farbwerte tauschen ----------------------- */
 
-.room a { color: var(--auf-raum); }
-
-.room :focus-visible { outline-color: var(--auf-raum); }
-
-/* --- Themenübersicht ---------------------------------------------- */
-
-/* Grid ohne Media Query: so viele Spalten, wie Karten mit mindestens
-   17rem nebeneinander passen. Bei 360 px eine, bei 768 px zwei, bei 1280 px drei. */
-.theme-list {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(min(100%, 17rem), 1fr));
-  gap: calc(var(--abstand) * 1.5);
-  padding: 0;
-  list-style: none;
-}
-
-.theme-list > li { display: grid; } /* Karten einer Zeile werden gleich hoch */
-
-/* Kleines Schild, das auf der oberen rechten Ecke der Karte sitzt. */
-.badge {
-  position: absolute;
-  top: 0;
-  right: var(--abstand);
-  margin: 0;
-  padding: 0 calc(var(--abstand) / 2);
-  font-family: var(--schrift-sans);
-  font-size: var(--schrift-klein);
-  font-weight: 600;
-  color: var(--bg);
-  background: var(--akzent);
-  border-radius: var(--radius);
-  transform: translateY(-50%);
-}
-
-/* --- Dunkelmodus: nur die Farbwerte tauschen ----------------------- */
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    color-scheme: dark;
-    --bg: #121412;
-    --text: #ebe7dd;
-    --text-leise: #aba79b;
-    --akzent: #d9b866;
-    --flaeche: #1a1d1a;
-    --linie: #2d312c;
-    --raum: #1b3329;
-    --auf-raum: #f3efe4;
+  @media (prefers-color-scheme: dark) {
+    :root {
+      color-scheme: dark;
+      --bg: #121412;
+      --text: #ebe7dd;
+      --text-leise: #aba79b;
+      --akzent: #d9b866;
+      --flaeche: #1a1d1a;
+      --linie: #2d312c;
+      --raum: #1b3329;
+      --auf-raum: #f3efe4;
+    }
   }
 }
