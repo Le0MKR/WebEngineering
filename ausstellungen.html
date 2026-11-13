@@ -6,6 +6,7 @@
   <title>Alle Ausstellungen – Artwell</title>
   <meta name="description" content="Alle 15 Ausstellungsthemen von Artwell im Überblick, von Impressionismus bis Frühe Fotografie.">
   <link rel="canonical" href="https://le0mkr.github.io/WebEngineering/ausstellungen.html">
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
   <link rel="stylesheet" href="style.css">
   <script type="module" src="app.js"></script>
 </head>
@@ -29,13 +30,13 @@
 
     <section aria-labelledby="aktuell">
       <h2 id="aktuell">Aktuelle Ausstellung</h2>
-      <p>Diese Woche läuft <a href="#impressionismus">Impressionismus</a>.</p>
+      <p>Diese Woche läuft <a href="#impressionismus" data-aktuell="link">Impressionismus</a>.</p>
 
       <!-- Dieselbe Karte wie unten in der Liste, hier nur mit Tailwind-Klassen statt .card und .badge -->
       <article class="relative mt-6 rounded-karte border border-linie bg-flaeche p-6">
         <p class="absolute top-0 right-4 m-0 -translate-y-1/2 rounded-karte bg-akzent px-2 font-ui text-klein font-semibold text-grund">Diese Woche</p>
-        <h3 class="mt-0 mb-4 text-normal leading-[1.2] font-semibold">Impressionismus</h3>
-        <p class="mb-0">Licht, Farbe und der flüchtige Augenblick: Die Impressionisten malten nicht, was sie über die Welt wussten, sondern wie sie sie in einem Moment sahen. Das Art Institute besitzt eine der bedeutendsten Sammlungen dieser Bewegung außerhalb Frankreichs.</p>
+        <h3 class="mt-0 mb-4 text-normal leading-[1.2] font-semibold" data-aktuell="titel">Impressionismus</h3>
+        <p class="mb-0" data-aktuell="einfuehrung">Licht, Farbe und der flüchtige Augenblick: Die Impressionisten malten nicht, was sie über die Welt wussten, sondern wie sie sie in einem Moment sahen. Das Art Institute besitzt eine der bedeutendsten Sammlungen dieser Bewegung außerhalb Frankreichs.</p>
       </article>
     </section>
 

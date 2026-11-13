@@ -2,7 +2,7 @@
 
 Artwell ist ein Online-Museum mit Werken aus der Sammlung des Art Institute of Chicago. Jede Woche öffnet automatisch eine neue Ausstellung zu einem anderen Thema, und zu jedem Bild gibt es Informationen zu Künstler, Entstehung und Hintergrund. Die App richtet sich an Kunstinteressierte, Studierende und alle, die ohne Museumsbesuch Kunst entdecken möchten.
 
-**Live:** https://<euer-name>.github.io/<repo>/
+**Live:** https://le0mkr.github.io/WebEngineering/
 **Team:** Lisa Westenhöfer, Hasan Can, Leo Marker
 
 ## Was die App kann
@@ -46,7 +46,7 @@ npm run build    # fertige Seite nach dist/
 npm run preview  # dist/ lokal ansehen
 ```
 
-Hochgeladen wird nur der Inhalt von `dist/`. `node_modules/` und `dist/` stehen in `.gitignore`; `package-lock.json` ist im Repository, damit alle dieselben Versionen installieren.
+Hochgeladen wird nur der Inhalt von `dist/`. Das erledigt die GitHub Action in `.github/workflows/pages.yml`: Bei jedem Push auf `main` baut sie die Seite und veröffentlicht `dist/` auf GitHub Pages. `node_modules/` und `dist/` stehen in `.gitignore`; `package-lock.json` ist im Repository, damit alle dieselben Versionen installieren.
 
 ## Technik
 
@@ -88,7 +88,7 @@ Drei Bausteine wiederholen sich im Projekt. Alle nutzen denselben Radius (`--rad
 
 ## Tailwind-Vergleich
 
-Auf `ausstellungen.html` steht die Karte „Impressionismus“ zweimal: oben unter „Aktuelle Ausstellung“ mit Tailwind-Klassen, unten in der Liste mit eigenem CSS (`.card`, `.badge`). Beide sehen gleich aus. Tailwind kam in Blatt 4 zuerst über das Play CDN und wird jetzt von Vite gebaut (siehe „Build mit Vite und Tailwind“).
+Auf `ausstellungen.html` steht die Karte der aktuellen Ausstellung zweimal: oben unter „Aktuelle Ausstellung“ mit Tailwind-Klassen, unten in der Liste mit eigenem CSS (`.card`, `.badge`). Beide sehen gleich aus. Tailwind kam in Blatt 4 zuerst über das Play CDN und wird jetzt von Vite gebaut (siehe „Build mit Vite und Tailwind“).
 
 | Tailwind-Klasse | CSS-Eigenschaft | Eigenes CSS |
 | --- | --- | --- |

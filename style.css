@@ -347,6 +347,13 @@
     border-color: var(--raum);
   }
 
+  /* Zeile über dem Titel, z. B. „Vom 2. bis 8. November 2026“ */
+  .room__datum {
+    margin-bottom: calc(var(--abstand) / 2);
+    font-family: var(--schrift-sans);
+    font-size: var(--schrift-klein);
+  }
+
   .room a { color: var(--auf-raum); }
 
   .room :focus-visible { outline-color: var(--auf-raum); }
