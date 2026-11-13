@@ -5,9 +5,17 @@ Artwell ist ein Online-Museum mit Werken aus der Sammlung des Art Institute of C
 **Live:** https://le0mkr.github.io/WebEngineering/
 **Team:** Lisa Westenhöfer, Hasan Can, Leo Marker
 
-## Was die App kann
+![Startseite von Artwell mit der Ausstellung der Woche](docs/screenshot-start.png)
 
-- Jede Woche eine neue Ausstellung zu einem Thema (z. B. „Impressionismus“, „Tiere in der Kunst“, „Künstlerinnen“), die automatisch anhand der Kalenderwoche wechselt
+## Was Artwell heute kann
+
+- **Ausstellung der Woche:** Jeden Montag (nach deutscher Zeit) ist automatisch das nächste von 15 Themen an der Reihe, für alle Besucher gleich.
+- **Alle Ausstellungen:** Übersicht der 15 Themen mit Einführungstext; die laufende Ausstellung ist markiert.
+- **Thema vorschlagen:** Ein Formular, das der Browser selbst prüft (es speichert und verschickt noch nichts).
+- **Für alle Geräte:** funktioniert vom Handy bis zum großen Bildschirm, hell und dunkel, vollständig per Tastatur bedienbar.
+
+## Was noch kommt
+
 - Die Werke einer Ausstellung als Galerie anzeigen und seitenweise durchblättern
 - Eine Detailansicht mit großem Bild, Künstler, Datierung, Technik, Maßen und dem Beschreibungstext des Museums
 - Frei in der gesamten Sammlung nach Titel, Künstler oder Stichwort suchen
@@ -15,6 +23,8 @@ Artwell ist ein Online-Museum mit Werken aus der Sammlung des Art Institute of C
 - *Optional / geplant:* Für Werke ohne Museumstext auf Wunsch eine KI-Beschreibung erzeugen, die deutlich als „KI-generiert, nicht vom Museum geprüft“ gekennzeichnet ist
 
 ## Datenquelle
+
+Die Werke kommen ab Termin 7 live aus der Sammlung des Art Institute of Chicago; bis dahin zeigt die Seite die Themen ohne Bilder.
 
 Die App nutzt die öffentliche **Art Institute of Chicago API**, die ohne Registrierung und ohne API-Key zugänglich ist. Laut API umfasst die Sammlung 133.119 Werke (Stand: Oktober 2026).
 
@@ -117,3 +127,15 @@ Damit beides zusammenpasst, steht `style.css` in der Ebene `@layer eigen`: Tailw
 Die CSS-Datei ist **11,6 kB groß, komprimiert (gzip) 3,3 kB**. Davon stammen etwa 6,4 kB von Tailwind, der Rest ist unser eigenes CSS.
 
 Sie bleibt so klein, obwohl Tailwind tausende Klassen kennt, weil Tailwind beim Build die Projektdateien durchsucht und nur die Klassen erzeugt, die dort wirklich vorkommen. Bei uns sind das gut 20 Klassen der Vergleichskarte. Dazu kommen Tailwinds Grundstile (Preflight) und die verwendeten Theme-Variablen. Außerdem entfernt Vite beim Build Kommentare und Leerzeichen.
+
+## Lokal und live
+
+Die Seite sah lokal und auf GitHub Pages von Anfang an gleich aus, und im Network-Tab der Live-Seite kommt kein Request mit 4xx oder 5xx zurück. Diese drei Fallen haben wir vorher vermieden:
+
+1. **Pfade:** Live liegt die Seite unter `/WebEngineering/`, lokal unter `/`. Vite baut deshalb mit `base: './'`, also mit relativen Pfaden (`./assets/…`). Mit absoluten Pfaden (`/assets/…`) hätten CSS und JavaScript auf `le0mkr.github.io/assets/…` gezeigt und eine 404 geliefert; genau das ist uns beim ersten Probe-Build in einem Unterordner passiert.
+2. **Groß- und Kleinschreibung:** Alle Dateinamen sind klein und ohne Umlaute (`ueber.html`, `favicon.svg`), und jeder Link schreibt sie genauso. Windows unterscheidet das nicht, der Server von GitHub Pages schon.
+3. **Favicon:** Ohne Angabe fragt der Browser `/favicon.ico` an der Wurzel der Domain an, also außerhalb unseres Repos, und bekommt eine 404. Jede Seite verlinkt deshalb ihr eigenes `favicon.svg`.
+
+## Keine Geheimnisse im Repo
+
+Wir haben das Repository samt der ganzen Git-Historie nach API-Keys, Passwörtern und Tokens durchsucht (`git grep -iE "api[_-]?key|secret|token|passw" $(git rev-list --all)`). Gefunden wurde nur der Satz „ohne API-Key“ in dieser README. Die API des Art Institute braucht keinen Schlüssel, eine `.env` gibt es bisher nicht und wurde nie committet. Falls später doch ein Geheimnis dazukommt, gehört es in `.env`; die Datei steht schon in `.gitignore`.
