@@ -2,7 +2,7 @@
 // Ohne JavaScript bleibt jede Seite lesbar: Dann steht dort der Text aus dem HTML.
 
 import { themen } from "./js/themen.js";
-import { heuteInBerlin, isoDatum, montagDerWoche, sonntagDerWoche, themaIndex, zeitraum } from "./js/woche.js";
+import { heuteInBerlin, isoDatum, montagDerWoche, plusWochen, sonntagDerWoche, themaIndex, zeitraum } from "./js/woche.js";
 
 const jahr = document.querySelector("#jahr");
 if (jahr) jahr.textContent = new Date().getFullYear();
@@ -11,7 +11,8 @@ if (jahr) jahr.textContent = new Date().getFullYear();
 
 const heute = heuteInBerlin();
 const montag = montagDerWoche(heute);
-const aktuell = themen[themaIndex(heute, themen.length)];
+const aktuellIndex = themaIndex(heute, themen.length);
+const aktuell = themen[aktuellIndex];
 
 // Texte mit data-aktuell="…" bekommen das Thema dieser Woche.
 for (const element of document.querySelectorAll("[data-aktuell]")) {
@@ -32,6 +33,24 @@ for (const element of document.querySelectorAll("[data-aktuell]")) {
 const schild = document.querySelector(".theme-list .badge");
 const karte = document.getElementById(aktuell.slug);
 if (schild && karte) karte.prepend(schild);
+
+// Jede Themenkarte nennt ihren nächsten Termin, z. B. „In 3 Wochen: vom 23. bis 29. November 2026“.
+themen.forEach((thema, index) => {
+  const themenKarte = document.getElementById(thema.slug);
+  const ueberschrift = themenKarte?.querySelector("h3");
+  if (!ueberschrift) return;
+
+  const inWochen = (index - aktuellIndex + themen.length) % themen.length;
+  const wann = zeitraum(plusWochen(montag, inWochen));
+  let text = `In ${inWochen} Wochen: vom ${wann}`;
+  if (inWochen === 0) text = `Läuft gerade: vom ${wann}`;
+  if (inWochen === 1) text = `Nächste Woche: vom ${wann}`;
+
+  const termin = document.createElement("p");
+  termin.className = "card__termin";
+  termin.textContent = text;
+  ueberschrift.after(termin);
+});
 
 // Die strukturierten Daten für Suchmaschinen nennen dieselbe Ausstellung.
 const jsonLd = document.querySelector('script[type="application/ld+json"]');

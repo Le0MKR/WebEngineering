@@ -10,7 +10,7 @@ Artwell ist ein Online-Museum mit Werken aus der Sammlung des Art Institute of C
 ## Was Artwell heute kann
 
 - **Ausstellung der Woche:** Jeden Montag (nach deutscher Zeit) ist automatisch das nächste von 15 Themen an der Reihe, für alle Besucher gleich.
-- **Alle Ausstellungen:** Übersicht der 15 Themen mit Einführungstext; die laufende Ausstellung ist markiert.
+- **Alle Ausstellungen:** Übersicht der 15 Themen mit Einführungstext und dem nächsten Termin; die laufende Ausstellung ist markiert.
 - **Thema vorschlagen:** Ein Formular, das der Browser selbst prüft (es speichert und verschickt noch nichts).
 - **Für alle Geräte:** funktioniert vom Handy bis zum großen Bildschirm, hell und dunkel, vollständig per Tastatur bedienbar.
 
@@ -98,7 +98,7 @@ Drei Bausteine wiederholen sich im Projekt. Alle nutzen denselben Radius (`--rad
 
 ## Tailwind-Vergleich
 
-Auf `ausstellungen.html` steht die Karte der aktuellen Ausstellung zweimal: oben unter „Aktuelle Ausstellung“ mit Tailwind-Klassen, unten in der Liste mit eigenem CSS (`.card`, `.badge`). Beide sehen gleich aus. Tailwind kam in Blatt 4 zuerst über das Play CDN und wird jetzt von Vite gebaut (siehe „Build mit Vite und Tailwind“).
+Auf `ausstellungen.html` steht die Karte der aktuellen Ausstellung zweimal: oben unter „Aktuelle Ausstellung“ mit Tailwind-Klassen, unten in der Liste mit eigenem CSS (`.card`, `.badge`). Beide sehen gleich aus; nur die Terminzeile, die JavaScript seit Blatt 5 einträgt, steht allein in der Liste. Tailwind kam in Blatt 4 zuerst über das Play CDN und wird jetzt von Vite gebaut (siehe „Build mit Vite und Tailwind“).
 
 | Tailwind-Klasse | CSS-Eigenschaft | Eigenes CSS |
 | --- | --- | --- |
@@ -139,3 +139,19 @@ Die Seite sah lokal und auf GitHub Pages von Anfang an gleich aus, und im Networ
 ## Keine Geheimnisse im Repo
 
 Wir haben das Repository samt der ganzen Git-Historie nach API-Keys, Passwörtern und Tokens durchsucht (`git grep -iE "api[_-]?key|secret|token|passw" $(git rev-list --all)`). Gefunden wurde nur der Satz „ohne API-Key“ in dieser README. Die API des Art Institute braucht keinen Schlüssel, eine `.env` gibt es bisher nicht und wurde nie committet. Falls später doch ein Geheimnis dazukommt, gehört es in `.env`; die Datei steht schon in `.gitignore`.
+
+## Mini-Server (Bonus)
+
+Im Ordner `server/` liegt ein kleiner Node-Server ohne zusätzliche Pakete. Er nutzt dieselben Themen (`js/themen.js`) und dieselbe Wochenlogik (`js/woche.js`) wie die Seite.
+
+```bash
+npm run server   # startet auf http://localhost:3000
+```
+
+| Route | Antwort |
+| --- | --- |
+| `/api/themen` | alle 15 Themen |
+| `/api/themen?suche=wasser` | nur Themen, deren Titel oder Einführung den Suchbegriff enthält (eigene Route mit gefilterten Daten) |
+| `/api/themen/aktuell` | das Thema dieser Woche mit Start- und Enddatum |
+
+Ein eigener Server ist nötig, sobald etwas geheim bleiben oder bei jeder Anfrage neu berechnet werden muss, etwa ein API-Schlüssel, eine Datenbank oder gespeicherte Formulareingaben. Solange alle Dateien für alle Besucher gleich sind und der Browser den Rest selbst erledigt, wie bei Artwell mit der offenen Museums-API, reicht GitHub Pages.

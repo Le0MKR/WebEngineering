@@ -372,6 +372,14 @@
 
   .theme-list > li { display: grid; } /* Karten einer Zeile werden gleich hoch */
 
+  /* Termin unter dem Titel; app.js trägt ihn ein. */
+  .card__termin {
+    margin-top: calc(var(--abstand) * -0.5);
+    font-family: var(--schrift-sans);
+    font-size: var(--schrift-klein);
+    color: var(--text-leise);
+  }
+
   /* Kleines Schild, das auf der oberen rechten Ecke der Karte sitzt. */
   .badge {
     position: absolute;
