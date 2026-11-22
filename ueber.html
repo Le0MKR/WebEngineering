@@ -59,7 +59,7 @@
       <h2 id="vorschlag">Thema vorschlagen</h2>
       <p>Welche Ausstellung fehlt noch? Schlagt uns ein Thema vor. Felder mit dem Zusatz „Pflichtfeld“ müssen ausgefüllt sein.</p>
 
-      <form class="card" action="danke.html" method="get">
+      <form id="vorschlag-form" class="card" action="danke.html" method="get">
         <p>
           <label for="name">Name (Pflichtfeld)</label><br>
           <input id="name" name="name" type="text" required minlength="2" autocomplete="name">
@@ -87,7 +87,12 @@
         </p>
       </form>
 
-      <p>Das Formular wird noch nicht ausgewertet: Eure Angaben werden weder gespeichert noch verschickt.</p>
+      <p>Verschickt wird nichts: Dein Vorschlag erscheint nur hier unten in der Liste. Die E-Mail-Adresse wird geprüft, aber nicht angezeigt.</p>
+
+      <h3>Eure Vorschläge</h3>
+      <p id="vorschlag-meldung" class="vorschlag__meldung" role="status"></p>
+      <p id="vorschlag-zaehler" class="vorschlag__zaehler">Noch keine Vorschläge.</p>
+      <ul id="vorschlag-liste" class="vorschlag-liste"></ul>
     </section>
   </main>
 

@@ -3,9 +3,17 @@
 
 import { themen } from "./js/themen.js";
 import { heuteInBerlin, isoDatum, montagDerWoche, plusWochen, sonntagDerWoche, themaIndex, zeitraum } from "./js/woche.js";
+import { starteVorschlaege } from "./js/vorschlaege.js";
+
+// Lebenszeichen für Blatt 6, A1: Das Skript läuft und findet Elemente im DOM.
+console.log("app.js geladen, Hauptinhalt gefunden:", document.querySelector("main") !== null);
 
 const jahr = document.querySelector("#jahr");
 if (jahr) jahr.textContent = new Date().getFullYear();
+
+// --- Themenvorschläge (nur auf ueber.html) ---------------------------
+
+starteVorschlaege();
 
 // --- Ausstellung der Woche -------------------------------------------
 

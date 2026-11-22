@@ -286,6 +286,31 @@
 
   textarea { resize: vertical; }
 
+  /* --- Themenvorschläge (ueber.html) -------------------------------- */
+
+  .vorschlag-liste {
+    display: grid;
+    gap: var(--abstand);
+    padding: 0;
+    list-style: none;
+  }
+
+  .vorschlag-liste h4 {
+    margin: 0 0 calc(var(--abstand) / 2);
+    font-size: var(--schrift);
+    font-weight: 600;
+  }
+
+  .vorschlag__herkunft,
+  .vorschlag__zaehler,
+  .vorschlag__meldung {
+    font-family: var(--schrift-sans);
+    font-size: var(--schrift-klein);
+    color: var(--text-leise);
+  }
+
+  .vorschlag__meldung:empty { display: none; }
+
   /* --- Komponente 1: Button ------------------------------------------ */
 
   /* Für <button> und für Links, die wie ein Button aussehen sollen. */
