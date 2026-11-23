@@ -87,10 +87,14 @@
         </p>
       </form>
 
-      <p>Verschickt wird nichts: Dein Vorschlag erscheint nur hier unten in der Liste. Die E-Mail-Adresse wird geprüft, aber nicht angezeigt.</p>
+      <p>Verschickt wird nichts: Dein Vorschlag erscheint nur hier unten in der Liste und bleibt in diesem Browser gespeichert, bis du ihn entfernst. Die E-Mail-Adresse wird geprüft, aber weder angezeigt noch gespeichert.</p>
 
       <h3>Eure Vorschläge</h3>
       <p id="vorschlag-meldung" class="vorschlag__meldung" role="status"></p>
+      <p class="vorschlag__filter">
+        <label for="vorschlag-filter">Vorschläge filtern</label><br>
+        <input id="vorschlag-filter" type="search" autocomplete="off" aria-describedby="vorschlag-zaehler">
+      </p>
       <p id="vorschlag-zaehler" class="vorschlag__zaehler">Noch keine Vorschläge.</p>
       <ul id="vorschlag-liste" class="vorschlag-liste"></ul>
     </section>

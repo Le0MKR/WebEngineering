@@ -311,6 +311,20 @@
 
   .vorschlag__meldung:empty { display: none; }
 
+  /* Kartenkopf: Titel links, Button rechts; bei wenig Platz untereinander. */
+  .vorschlag__kopf {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: calc(var(--abstand) / 2);
+    margin-bottom: calc(var(--abstand) / 2);
+  }
+
+  .vorschlag__kopf h4 { margin: 0; }
+
+  .vorschlag__filter { max-width: 24rem; }
+
   /* --- Komponente 1: Button ------------------------------------------ */
 
   /* Für <button> und für Links, die wie ein Button aussehen sollen. */
