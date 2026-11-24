@@ -11,7 +11,7 @@ Artwell ist ein Online-Museum mit Werken aus der Sammlung des Art Institute of C
 
 - **Ausstellung der Woche:** Jeden Montag (nach deutscher Zeit) ist automatisch das nächste von 15 Themen an der Reihe, für alle Besucher gleich.
 - **Alle Ausstellungen:** Übersicht der 15 Themen mit Einführungstext und dem nächsten Termin; die laufende Ausstellung ist markiert.
-- **Thema vorschlagen:** Ein Formular, das der Browser selbst prüft (es speichert und verschickt noch nichts).
+- **Thema vorschlagen:** Vorschläge erscheinen ohne Neuladen in einer Liste mit Zähler, lassen sich filtern und entfernen und bleiben in diesem Browser gespeichert. Verschickt wird nichts.
 - **Für alle Geräte:** funktioniert vom Handy bis zum großen Bildschirm, hell und dunkel, vollständig per Tastatur bedienbar.
 
 ## Was noch kommt
@@ -64,15 +64,15 @@ Womit gebaut und warum. Eine Zeile pro Entscheidung reicht, aber es soll eine En
 
 ## KI-Log
 
-Ehrlich ausfüllen, das zählt zur Bewertung.
-
 | Werkzeug | Wofür benutzt |
 | --- | --- |
-| z. B. Copilot | z. B. Formular-Validierung erklären lassen |
+| Claude Code | Code für die Übungsblätter vorschlagen, Aufgaben in drei Teile aufteilen, Seiten mit Lighthouse und im Browser prüfen |
 
-**Ein Fall, in dem KI geholfen hat:** Was habt ihr gefragt, was kam zurück, was habt ihr geändert?
+**Ein Fall, in dem KI geholfen hat:** Für Blatt 5 sollte die Seite zeigen, welche Ausstellung diese Woche läuft. Die KI hat die Wochen fortlaufend seit einem festen Montag gezählt statt mit der Kalenderwoche zu rechnen. Dadurch springt die Reihe auch zum Jahreswechsel und in Jahren mit 53 Wochen nicht. Wir haben das mit Daten nachgeprüft, deren Thema wir kannten (5. Oktober: Porträts, 12. Oktober: Stillleben).
 
-**Ein Fall, in dem KI falsch lag:** Woran habt ihr es gemerkt, wie habt ihr es gelöst?
+**Ein Fall, in dem die KI falsch lag:** Beim Umbau für Blatt 4 hat die KI in `style.css` einen Kommentar mit einem doppelten `*/` geschrieben. Dadurch wurde die Regel danach, die für den klebenden Kopf, ungültig. Gemerkt haben wir es an der Warnung „Unexpected token“ beim `npm run build`. Behoben wurde es vor dem Commit, seitdem lesen wir die Build-Ausgabe jedes Mal.
+
+**Noch ein Fall, in dem die KI falsch lag:** Der erste Vite-Build hatte absolute Pfade (`/assets/…`). Als wir `dist/` in einem Unterordner geöffnet haben, wie später auf GitHub Pages, war die Seite ungestylt, weil CSS und JavaScript eine 404 lieferten. Die Lösung war `base: './'` in `vite.config.js`.
 
 ## Rich Results Test
 
@@ -155,3 +155,12 @@ npm run server   # startet auf http://localhost:3000
 | `/api/themen/aktuell` | das Thema dieser Woche mit Start- und Enddatum |
 
 Ein eigener Server ist nötig, sobald etwas geheim bleiben oder bei jeder Anfrage neu berechnet werden muss, etwa ein API-Schlüssel, eine Datenbank oder gespeicherte Formulareingaben. Solange alle Dateien für alle Besucher gleich sind und der Browser den Rest selbst erledigt, wie bei Artwell mit der offenen Museums-API, reicht GitHub Pages.
+
+## Interaktion (Blatt 6)
+
+Das Formular „Thema vorschlagen“ auf `ueber.html` lädt nicht neu: `js/vorschlaege.js` fängt das `submit`-Event ab (`event.preventDefault()`), liest die Felder mit `FormData`, prüft sie und schreibt das Ergebnis mit `textContent` in die Seite. Ohne JavaScript führt das Formular wie früher zu `danke.html`.
+
+- **Ein Zustand:** Alles, was die Anzeige bestimmt, steht im Objekt `zustand` (`vorschlaege`, `filter`, `meldung`).
+- **Eine Zeichenfunktion:** `zeichne()` baut Liste, Zähler, Filter und Meldung jedes Mal komplett aus dem Zustand. Jede Änderung (hinzufügen, entfernen, filtern) läuft über `aendere()`, das speichert und dann `zeichne()` aufruft. Deshalb passen Liste und Zähler auch nach dem Löschen zusammen („1 von 3 Vorschlägen passen zum Filter“).
+- **Über den Reload hinweg (Bonus):** Die Vorschläge stehen im `localStorage` unter `artwell.vorschlaege`, zusammen mit einer Versionsnummer. Beim Start wird alles geprüft: kaputtes JSON, eine andere Version oder Einträge mit falschen Feldern werden verworfen, und die Seite sagt das in einem Satz, statt abzustürzen. Klappt der Zugriff gar nicht (privates Fenster), läuft die Seite ohne Speicher weiter.
+- **Fehlersuche:** Die Notizen zu den fünf Fehlern aus dem Baustein `t6-fehlersuche` stehen in [`notizen/fehlersuche.md`](notizen/fehlersuche.md).
