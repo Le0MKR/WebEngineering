@@ -1,7 +1,7 @@
 {
   "name": "artwell",
   "private": true,
-  "version": "0.4.0",
+  "version": "0.7.0",
   "type": "module",
   "scripts": {
     "dev": "vite",
@@ -13,5 +13,8 @@
     "@tailwindcss/vite": "^4.3.3",
     "tailwindcss": "^4.3.3",
     "vite": "^8.3.5"
+  },
+  "dependencies": {
+    "dompurify": "^3.4.18"
   }
 }

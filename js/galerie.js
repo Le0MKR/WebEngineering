@@ -64,8 +64,12 @@ function baueKachel(werk) {
   tafel.className = "plaque";
   tafel.append(werk.artist || "Unbekannt", titel, werk.date);
 
+  const link = document.createElement("a");
+  link.href = `werk.html?id=${werk.id}`;
+  link.append(bild, tafel);
+
   const eintrag = document.createElement("li");
-  eintrag.append(bild, tafel);
+  eintrag.append(link);
   return eintrag;
 }
 

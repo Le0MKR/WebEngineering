@@ -9,8 +9,12 @@ Stand: Die Werke der Ausstellung und die Suchergebnisse werden im Browser per Ja
 - [Start](https://le0mkr.github.io/WebEngineering/): Ausstellung der Woche und kurze Erklärung, wie Artwell funktioniert
 - [Ausstellungen](https://le0mkr.github.io/WebEngineering/ausstellungen.html): alle 15 Themen mit Einführungstext
 - [Suche](https://le0mkr.github.io/WebEngineering/suche.html): freie Suche nach Titel, Künstler oder Stichwort in der ganzen Sammlung
+- [Favoriten](https://le0mkr.github.io/WebEngineering/favoriten.html): gemerkte Werke, nur im Browser gespeichert
+- Werkseite `werk.html?id=…`: ein Werk mit großem Bild, Angaben, Museumstext sowie Quelle und Lizenz
 - [Über](https://le0mkr.github.io/WebEngineering/ueber.html): Idee, Team, Datenquelle und ein Formular für Themenvorschläge
 
 ## Datenquelle
 
 - [API des Art Institute of Chicago](https://api.artic.edu/docs/): öffentliche Schnittstelle, aus der Artwell die Werkdaten bezieht
+- [Datenschutz](https://le0mkr.github.io/WebEngineering/datenschutz.html): keine Cookies, kein Tracking, Bilder vom Art Institute
+- [Impressum](https://le0mkr.github.io/WebEngineering/impressum.html)

@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Werk – Artwell</title>
+  <meta name="description" content="Ein Werk aus der Sammlung des Art Institute of Chicago mit Künstler, Datierung, Technik, Maßen und dem Text des Museums.">
+  <link rel="canonical" href="https://le0mkr.github.io/WebEngineering/werk.html">
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="style.css">
+  <script type="module" src="app.js"></script>
+</head>
+<body>
+  <a class="skip-link" href="#inhalt">Zum Inhalt springen</a>
+
+  <header class="site-header">
+    <a class="site-header__home" href="index.html">Artwell</a>
+    <nav aria-label="Hauptmenü">
+      <ul class="site-nav">
+        <li><a href="index.html">Diese Woche</a></li>
+        <li><a href="ausstellungen.html">Ausstellungen</a></li>
+        <li><a href="suche.html">Suche</a></li>
+        <li><a href="favoriten.html">Favoriten</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <main id="inhalt" class="wide">
+    <h1 id="werk-titel" lang="en">Werk</h1>
+    <p id="status" role="status">Die Werkseite braucht JavaScript, um das Werk aus der Sammlung zu laden.</p>
+    <p><button id="erneut" class="button" type="button" hidden>Erneut versuchen</button></p>
+
+    <div id="werk" class="artwork" hidden>
+      <a id="werk-gross" class="artwork__bild" title="Bild in voller Größe öffnen">
+        <img id="werk-bild" alt="">
+      </a>
+
+      <div>
+        <p class="artwork__kuenstler" id="werk-kuenstler"></p>
+        <p id="werk-datum"></p>
+        <p><button id="favorit" class="button button--leise" type="button" aria-pressed="false">Favorit</button></p>
+
+        <table class="artwork__daten">
+          <tbody>
+            <tr><th scope="row">Werkart</th><td id="werk-art" lang="en"></td></tr>
+            <tr><th scope="row">Technik</th><td id="werk-technik" lang="en"></td></tr>
+            <tr><th scope="row">Maße</th><td id="werk-masse"></td></tr>
+            <tr><th scope="row">Sammlung</th><td id="werk-sammlung" lang="en"></td></tr>
+          </tbody>
+        </table>
+
+        <section aria-labelledby="ueber-werk">
+          <h2 id="ueber-werk">Über das Werk</h2>
+          <div id="werk-text" lang="en"></div>
+        </section>
+
+        <section aria-labelledby="quelle">
+          <h2 id="quelle">Quelle und Lizenz</h2>
+          <p>Werkdaten und Abbildung: Art Institute of Chicago, <a id="werk-quelle" href="https://www.artic.edu/" rel="noopener">Werkseite des Museums</a>. Das Werk ist gemeinfrei. Text: Art Institute of Chicago, Lizenz <a href="https://creativecommons.org/licenses/by/4.0/deed.de" rel="noopener">CC BY 4.0</a>; alle übrigen Angaben stehen unter CC0.</p>
+        </section>
+      </div>
+    </div>
+  </main>
+
+  <footer>
+    <p>Artwell · Web-Engineering 1 · DHBW Karlsruhe · <span id="jahr"></span></p>
+    <p>Werkdaten und Abbildungen: <a href="https://www.artic.edu/" rel="noopener">Art Institute of Chicago</a></p>
+    <nav aria-label="Rechtliches und Hintergrund">
+      <ul class="footer-nav">
+        <li><a href="ueber.html">Über Artwell</a></li>
+        <li><a href="datenschutz.html">Datenschutz</a></li>
+        <li><a href="impressum.html">Impressum</a></li>
+      </ul>
+    </nav>
+  </footer>
+</body>
+</html>

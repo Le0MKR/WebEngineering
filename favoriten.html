@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Favoriten – Artwell</title>
+  <meta name="description" content="Gemerkte Werke aus den Ausstellungen von Artwell, gespeichert nur in diesem Browser.">
+  <link rel="canonical" href="https://le0mkr.github.io/WebEngineering/favoriten.html">
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="style.css">
+  <script type="module" src="app.js"></script>
+</head>
+<body>
+  <a class="skip-link" href="#inhalt">Zum Inhalt springen</a>
+
+  <header class="site-header">
+    <a class="site-header__home" href="index.html">Artwell</a>
+    <nav aria-label="Hauptmenü">
+      <ul class="site-nav">
+        <li><a href="index.html">Diese Woche</a></li>
+        <li><a href="ausstellungen.html">Ausstellungen</a></li>
+        <li><a href="suche.html">Suche</a></li>
+        <li><a href="favoriten.html" aria-current="page">Favoriten</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <main id="inhalt" class="wide">
+    <h1>Favoriten</h1>
+    <p>Gemerkte Werke bleiben nur in diesem Browser gespeichert. Sie werden nirgendwohin geschickt und sind auf anderen Geräten nicht zu sehen.</p>
+
+    <section aria-labelledby="gemerkt">
+      <h2 id="gemerkt">Gemerkte Werke</h2>
+      <p id="status" role="status">Die Favoriten brauchen JavaScript.</p>
+      <p><button id="erneut" class="button" type="button" hidden>Erneut versuchen</button></p>
+      <ul id="ergebnisse" class="gallery" data-galerie="favoriten"></ul>
+      <nav id="blaettern" class="pagination" aria-label="Seiten der Favoriten"></nav>
+    </section>
+  </main>
+
+  <footer>
+    <p>Artwell · Web-Engineering 1 · DHBW Karlsruhe · <span id="jahr"></span></p>
+    <p>Werkdaten und Abbildungen: <a href="https://www.artic.edu/" rel="noopener">Art Institute of Chicago</a></p>
+    <nav aria-label="Rechtliches und Hintergrund">
+      <ul class="footer-nav">
+        <li><a href="ueber.html">Über Artwell</a></li>
+        <li><a href="datenschutz.html">Datenschutz</a></li>
+        <li><a href="impressum.html">Impressum</a></li>
+      </ul>
+    </nav>
+  </footer>
+</body>
+</html>

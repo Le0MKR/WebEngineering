@@ -470,6 +470,15 @@
     color: var(--text);
   }
 
+  /* Jede Kachel ist ein Link zur Werkseite; die Tafel bleibt in Textfarbe. */
+  .gallery a {
+    display: block;
+    color: inherit;
+    text-decoration: none;
+  }
+
+  .gallery a:hover cite { text-decoration: underline; }
+
   .pagination {
     display: flex;
     flex-wrap: wrap;
@@ -479,6 +488,71 @@
     font-family: var(--schrift-sans);
     font-size: var(--schrift-klein);
   }
+
+  /* --- Werkseite ------------------------------------------------------ */
+
+  /* Schmal: Bild über den Angaben; ab Tablet-Breite Bild links, Angaben rechts. */
+  .artwork {
+    display: grid;
+    gap: calc(var(--abstand) * 2);
+    align-items: start;
+  }
+
+  .artwork__bild img {
+    display: block;
+    width: 100%;
+    height: auto;
+    background: var(--linie);
+  }
+
+  .artwork__kuenstler {
+    margin-bottom: 0;
+    font-size: var(--schrift-gross);
+  }
+
+  .artwork__daten {
+    width: 100%;
+    margin-bottom: var(--abstand);
+    border-collapse: collapse;
+    font-size: var(--schrift-klein);
+  }
+
+  .artwork__daten th,
+  .artwork__daten td {
+    padding: calc(var(--abstand) / 2) 0;
+    text-align: left;
+    vertical-align: top;
+    border-top: 1px solid var(--linie);
+  }
+
+  .artwork__daten th {
+    width: 7rem;
+    font-family: var(--schrift-sans);
+    font-weight: 600;
+  }
+
+  .artwork section {
+    margin-top: calc(var(--abstand) * 2);
+  }
+
+  @media (min-width: 48rem) {
+    .artwork { grid-template-columns: 3fr 2fr; }
+  }
+
+  /* --- Fuß: zweite Navigation ---------------------------------------- */
+
+  .footer-nav {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--abstand);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .footer-nav a { color: var(--text-leise); }
+
+  .footer-nav a[aria-current="page"] { color: var(--akzent); }
 
   /* --- Dunkelmodus: nur die Farbwerte tauschen ----------------------- */
 

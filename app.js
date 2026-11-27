@@ -6,6 +6,8 @@ import { heuteInBerlin, isoDatum, montagDerWoche, plusWochen, sonntagDerWoche, t
 import { starteVorschlaege } from "./js/vorschlaege.js";
 import { ladeAusstellung, suche } from "./js/api.js";
 import { starteGalerie } from "./js/galerie.js";
+import { ladeFavoriten } from "./js/favoriten.js";
+import { starteWerk } from "./js/werk.js";
 
 // Lebenszeichen für Blatt 6, A1: Das Skript läuft und findet Elemente im DOM.
 console.log("app.js geladen, Hauptinhalt gefunden:", document.querySelector("main") !== null);
@@ -82,6 +84,19 @@ if (galerie === "suche") {
 
   sucheJetzt();
 }
+
+// --- Favoriten (nur auf favoriten.html): kommen aus dem localStorage, nicht aus der API
+
+if (galerie === "favoriten") {
+  starteGalerie((seite, proSeite) => {
+    const alle = ladeFavoriten();
+    return { werke: alle.slice((seite - 1) * proSeite, seite * proSeite), gesamt: alle.length };
+  }, "Noch keine Favoriten. Auf jeder Werkseite lässt sich ein Werk mit „Favorit“ merken.");
+}
+
+// --- Werkseite (nur auf werk.html) ---------------------------------
+
+starteWerk();
 
 // Auf der Übersicht wandert das Schild „Diese Woche“ zur richtigen Karte.
 const schild = document.querySelector(".theme-list .badge");

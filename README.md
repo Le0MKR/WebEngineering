@@ -12,21 +12,22 @@ Artwell ist ein Online-Museum mit Werken aus der Sammlung des Art Institute of C
 - **Ausstellung der Woche:** Jeden Montag (nach deutscher Zeit) ist automatisch das nächste von 15 Themen an der Reihe, für alle Besucher gleich.
 - **Werke aus der Sammlung:** Die Startseite lädt die Werke der Ausstellung live aus der API des Art Institute of Chicago und zeigt sie als Galerie mit Museumstafel, 24 pro Seite.
 - **Suche:** frei in der ganzen Sammlung nach Titel, Künstler oder Stichwort suchen; gesucht wird 300 ms nach dem letzten Tastendruck.
+- **Werkseite:** großes Bild (Klick öffnet die volle Größe), Künstler, Datierung, Werkart, Technik, Maße, Sammlung, der Text des Museums sowie Quelle und Lizenz.
+- **Favoriten:** Werke auf der Werkseite merken; die Liste bleibt in diesem Browser gespeichert und funktioniert auch ohne Verbindung zur API.
 - **Alle Ausstellungen:** Übersicht der 15 Themen mit Einführungstext und dem nächsten Termin; die laufende Ausstellung ist markiert.
 - **Thema vorschlagen:** Vorschläge erscheinen ohne Neuladen in einer Liste mit Zähler, lassen sich filtern und entfernen und bleiben in diesem Browser gespeichert. Verschickt wird nichts.
 - **Für alle Geräte:** funktioniert vom Handy bis zum großen Bildschirm, hell und dunkel, vollständig per Tastatur bedienbar.
 
 ## Was noch kommt
 
-- Eine Detailansicht mit großem Bild, Künstler, Datierung, Technik, Maßen und dem Beschreibungstext des Museums
-- Kunstwerke als Favoriten speichern; die Favoritenliste bleibt im Browser (localStorage) erhalten
+- Impressum und Datenschutzerklärung ausfüllen (die Seiten stehen, Platzhalter in eckigen Klammern) und mit der Lehrkraft abstimmen
 - *Optional / geplant:* Für Werke ohne Museumstext auf Wunsch eine KI-Beschreibung erzeugen, die deutlich als „KI-generiert, nicht vom Museum geprüft“ gekennzeichnet ist
 
 ## Datenquelle
 
 Die App nutzt die öffentliche **Art Institute of Chicago API**, die ohne Registrierung und ohne API-Key zugänglich ist. Laut API umfasst die Sammlung 133.119 Werke (Stand: Oktober 2026).
 
-Alle Anfragen stehen in `js/api.js`. Eine Ausstellung ist eine einzige Anfrage an `/api/v1/artworks/search` mit bis zu 96 Werken. Die Abfrage jedes Themas steht in `js/themen.js` (`abfragen`), übernommen aus unserem Konzept, wo jede gegen die API geprüft wurde. Über `fields` fragen wir nur die Felder ab, die die Galerie braucht: `id`, `title`, `artist_title`, `date_display`, `image_id`, `thumbnail` und `artwork_type_title`. Jede Anfrage filtert auf gemeinfreie Werke (`is_public_domain`) mit Bild (`image_id`) und schickt den Header `AIC-User-Agent`, wie es die Doku verlangt.
+Alle Anfragen stehen in `js/api.js`. Eine Ausstellung ist eine einzige Anfrage an `/api/v1/artworks/search` mit bis zu 96 Werken. Die Abfrage jedes Themas steht in `js/themen.js` (`abfragen`), übernommen aus unserem Konzept, wo jede gegen die API geprüft wurde. Über `fields` fragen wir nur die Felder ab, die die Galerie braucht: `id`, `title`, `artist_title`, `date_display`, `image_id`, `thumbnail` und `artwork_type_title`. Die Werkseite holt mit `/api/v1/artworks/{id}` zusätzlich `medium_display`, `dimensions`, `description`, `credit_line` und `is_public_domain`. Jede Anfrage filtert auf gemeinfreie Werke (`is_public_domain`) mit Bild (`image_id`) und schickt den Header `AIC-User-Agent`, wie es die Doku verlangt.
 
 Die Bilder kommen vom IIIF-Bildserver des Museums: `https://www.artic.edu/iiif/2/{image_id}/full/400,/0/default.jpg`. Der Text aus `thumbnail.alt_text` dient als Alternativtext; fehlt er, setzt `js/api.js` ihn aus Werkart, Titel, Künstler und Jahr zusammen.
 
@@ -46,7 +47,7 @@ Dokumentation: https://api.artic.edu/docs/
 Seit Blatt 4 läuft das Projekt mit Vite. Voraussetzung ist Node.js (aktuelle LTS-Version).
 
 ```bash
-npm install      # einmalig: lädt Vite und Tailwind nach node_modules/
+npm install      # einmalig: lädt Vite, Tailwind und DOMPurify nach node_modules/
 npm run dev      # Entwicklungsserver unter http://[::1]:5173
 npm run build    # fertige Seite nach dist/
 npm run preview  # dist/ lokal ansehen
@@ -212,4 +213,17 @@ Anfragen an `api.artic.edu` im Network-Tab (Filter „api.artic“):
 **CORS in drei Sätzen:** Der Browser blockiert, dass ein Skript von unserer Domain die Antwort einer fremden Domain liest, solange diese das nicht ausdrücklich erlaubt. Das schützt die Nutzer: Eine fremde Seite soll nicht mit deren Cookies und Anmeldungen heimlich Daten von anderen Diensten abrufen können. Helfen kann nur der angefragte Server, indem er einen Header wie `Access-Control-Allow-Origin: *` schickt (wie das Art Institute), oder ein eigener Server, der die Anfrage weiterreicht.
 
 **Was heißt asynchron?** Der Browser schickt die Anfrage los und macht sofort weiter; die Antwort wird später verarbeitet, wenn sie da ist (`await` wartet nur innerhalb der eigenen Funktion). Wäre `fetch` synchron, stünde die ganze Seite still, bis die Antwort da ist: keine Klicks, kein Scrollen, kein „Lade …“, und bei einem langsamen Netz wirkte die Seite minutenlang eingefroren.
+
+### A4: Eine Bibliothek bewerten – DOMPurify
+
+Die Werkseite zeigt den Beschreibungstext des Museums (`description`). Er kommt als HTML aus der API, mit Absätzen, Kursivschrift und Links. Setzt man fremdes HTML ungeprüft mit `innerHTML` ein, könnte ein eingeschleustes `<script>` oder `onerror="…"` auf unserer Seite laufen (XSS). Nur `textContent` zu nehmen, wäre sicher, zeigt aber die Tags als Text an. Geprüft haben wir deshalb **DOMPurify**, das HTML bereinigt und nur harmlose Tags übrig lässt.
+
+| | DOMPurify |
+|---|---|
+| Downloads pro Woche (npmjs.com) | rund 104 Millionen (19. bis 25. November 2026) |
+| Letzte Version | 3.5.0 vom 22. November 2026; wir nutzen 3.4.18 vom 14. November 2026 |
+| Größe (bundlephobia.com, 3.4.18) | 28,7 kB, gzip 11,5 kB, keine Abhängigkeiten |
+| Lizenz | MPL-2.0 oder Apache-2.0 (frei wählbar) |
+
+**Entscheidung: ja.** Selbst einen HTML-Bereiniger zu schreiben, wäre unsicher; DOMPurify ist dafür der verbreitete Standard, wird laufend gepflegt und hat keine weiteren Abhängigkeiten. Die 11,5 kB lädt nur, wer `app.js` lädt, und sie schützen die einzige Stelle, an der wir HTML aus der API einsetzen (`js/werk.js`). Die brandneue Version 3.5.0 haben wir bewusst noch nicht genommen, sondern die letzte Version davor; der Lockfile hält sie fest.
 

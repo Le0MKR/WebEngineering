@@ -86,7 +86,19 @@ function zuWerk(roh) {
     height: bild.height || 3,
     altText,
     artworkType: roh.artwork_type_title || "",
+    // Nur die Werkseite fragt diese Felder ab; in Listen bleiben sie leer.
+    medium: roh.medium_display || "",
+    dimensions: roh.dimensions || "",
+    description: roh.description || null, // HTML, vor der Anzeige mit DOMPurify bereinigen
+    creditLine: roh.credit_line || "",
   };
+}
+
+/** Ein einzelnes Werk mit allen Angaben; null, wenn es nicht gemeinfrei ist oder kein Bild hat. */
+export async function ladeWerk(id) {
+  const felder = `${FELDER},medium_display,dimensions,description,credit_line,is_public_domain`;
+  const daten = await frage(`/artworks/${id}?fields=${felder}`);
+  return daten.data.is_public_domain ? zuWerk(daten.data) : null;
 }
 
 export function bildUrl(imageId, breite = 400) {
