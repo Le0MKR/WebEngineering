@@ -64,7 +64,7 @@ Womit gebaut und warum. Eine Zeile pro Entscheidung reicht, aber es soll eine En
 | --- | --- |
 | Claude Code | Code für die Übungsblätter vorschlagen, Aufgaben in drei Teile aufteilen, Seiten mit Lighthouse und im Browser prüfen |
 
-**Ein Fall, in dem KI geholfen hat:** Für Blatt 5 sollte die Seite zeigen, welche Ausstellung diese Woche läuft. Die KI hat die Wochen fortlaufend seit einem festen Montag gezählt statt mit der Kalenderwoche zu rechnen. Dadurch springt die Reihe auch zum Jahreswechsel und in Jahren mit 53 Wochen nicht. Wir haben das mit Daten nachgeprüft, deren Thema wir kannten (5. Oktober: Porträts, 12. Oktober: Stillleben).
+**Ein Fall, in dem KI geholfen hat:** Für Blatt 5 sollte die Seite zeigen, welche Ausstellung diese Woche läuft. Die KI hat die Wochen fortlaufend seit einem festen Montag gezählt statt mit der Kalenderwoche zu rechnen. Dadurch springt die Reihe auch zum Jahreswechsel und in Jahren mit 53 Wochen nicht. Wir haben das mit Daten nachgeprüft, deren Thema wir kannten (damals 5. Oktober: Porträts, 12. Oktober: Stillleben). Seit Blatt 7 beginnt die Reihe am 23. November 2026 von vorn mit Impressionismus; dafür musste nur der Bezugsmontag in `js/woche.js` geändert werden.
 
 **Ein Fall, in dem die KI falsch lag:** Beim Umbau für Blatt 4 hat die KI in `style.css` einen Kommentar mit einem doppelten `*/` geschrieben. Dadurch wurde die Regel danach, die für den klebenden Kopf, ungültig. Gemerkt haben wir es an der Warnung „Unexpected token“ beim `npm run build`. Behoben wurde es vor dem Commit, seitdem lesen wir die Build-Ausgabe jedes Mal.
 

@@ -1,14 +1,15 @@
 /* Wochenlogik: Welche Ausstellung läuft wann?
  *
  * Alle Besucher sehen dieselbe Ausstellung, denn sie hängt nur vom Datum ab.
- * Gezählt werden fortlaufende Wochen seit Montag, dem 5. Januar 1970. So
+ * Gezählt werden fortlaufende Wochen seit Montag, dem 23. November 2026;
+ * in dieser Woche beginnt die Reihe mit dem ersten Thema (Impressionismus). So
  * wiederholt sich auch über Jahreswechsel und Wochen 53 kein Thema, bevor
  * alle an der Reihe waren. Die Woche wechselt in der Nacht zum Montag nach
  * deutscher Zeit, egal wo der Browser steht. */
 
 const TAG_MS = 24 * 60 * 60 * 1000;
 const WOCHE_MS = 7 * TAG_MS;
-const BEZUGSMONTAG = Date.UTC(1970, 0, 5);
+const BEZUGSMONTAG = Date.UTC(2026, 10, 23); // Monat zählt ab 0: 10 = November
 
 /** Heutiges Datum in Berlin, als Mitternacht UTC (ohne Uhrzeit). */
 export function heuteInBerlin(jetzt = new Date()) {
