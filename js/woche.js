@@ -22,7 +22,6 @@ export function heuteInBerlin(jetzt = new Date()) {
   return new Date(Date.UTC(wert("year"), wert("month") - 1, wert("day")));
 }
 
-/** Montag der Woche, in der das Datum liegt. */
 export function montagDerWoche(datum) {
   const wochentag = datum.getUTCDay() || 7; // Montag = 1 … Sonntag = 7
   return new Date(datum.getTime() - (wochentag - 1) * TAG_MS);
@@ -34,7 +33,6 @@ export function themaIndex(datum, anzahlThemen) {
   return ((wochen % anzahlThemen) + anzahlThemen) % anzahlThemen;
 }
 
-/** Sonntag derselben Woche. */
 export function sonntagDerWoche(montag) {
   return new Date(montag.getTime() + 6 * TAG_MS);
 }

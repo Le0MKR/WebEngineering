@@ -57,7 +57,7 @@
     </nav>
   </header>
 
-  <main id="inhalt">
+  <main id="inhalt" class="wide">
     <h1>Artwell</h1>
     <p>Ein Online-Museum, das jede Woche eine neue Ausstellung zeigt – mit gemeinfreien Werken aus der Sammlung des Art Institute of Chicago.</p>
 
@@ -66,13 +66,15 @@
       <h2 id="aktuell">Ausstellung der Woche: <span data-aktuell="titel">Impressionismus</span></h2>
       <p data-aktuell="einfuehrung">Licht, Farbe und der flüchtige Augenblick: Die Impressionisten malten nicht, was sie über die Welt wussten, sondern wie sie sie in einem Moment sahen. Das Art Institute besitzt eine der bedeutendsten Sammlungen dieser Bewegung außerhalb Frankreichs.</p>
 
-      <h3>Werke der Ausstellung</h3>
-      <p>Die Werke werden später live aus der Sammlung geladen. Bis dahin steht hier nur das Gerüst.</p>
+      <p><a class="button" href="#werke">Werke ansehen</a></p>
+    </section>
 
-      <!-- Ab Termin 6: hier landen die Daten
-      <p id="status" role="status"></p>
-      <ul id="ergebnisse"></ul>
-      -->
+    <section aria-labelledby="werke">
+      <h2 id="werke">Werke der Ausstellung</h2>
+      <p id="status" role="status">Die Werke werden live aus der Sammlung des Art Institute of Chicago geladen; dafür braucht die Seite JavaScript.</p>
+      <p><button id="erneut" class="button" type="button" hidden>Erneut versuchen</button></p>
+      <ul id="ergebnisse" class="gallery" data-galerie="ausstellung"></ul>
+      <nav id="blaettern" class="pagination" aria-label="Seiten der Ausstellung"></nav>
     </section>
 
     <section aria-labelledby="ablauf">

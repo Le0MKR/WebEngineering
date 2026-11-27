@@ -8,10 +8,9 @@
 
 @layer theme, base, eigen, components, utilities;
 
-/* Tailwind kommt seit Blatt 4 aus dem Vite-Build statt vom CDN. */
 @import "tailwindcss";
 
-/* Tailwind-Namen für unsere Variablen (vorher im head von ausstellungen.html) */
+/* Tailwind-Namen für unsere Variablen */
 @theme inline {
   --color-grund: var(--bg);
   --color-flaeche: var(--flaeche);
@@ -127,7 +126,6 @@
 
   main.wide p { max-width: 65ch; }
 
-  /* Jeder Abschnitt beginnt mit einer Linie und etwas Luft. */
   main > section {
     margin-top: calc(var(--abstand) * 3);
     padding-top: calc(var(--abstand) * 2);
@@ -244,7 +242,6 @@
     outline-offset: 0;
   }
 
-  /* Die aktuelle Seite trägt die goldene Linie. */
   .site-nav a[aria-current="page"] {
     border-bottom-color: var(--akzent);
   }
@@ -354,7 +351,6 @@
     background: transparent;
   }
 
-  /* Button-Leiste: nebeneinander, bei wenig Platz untereinander. */
   .button-bar {
     display: flex;
     flex-wrap: wrap;
@@ -433,6 +429,49 @@
     background: var(--akzent);
     border-radius: var(--radius);
     transform: translateY(-50%);
+  }
+
+  /* --- Galerie: Werke aus der API ------------------------------------- */
+
+  /* Die Bilder behalten ihr Seitenverhältnis (height: auto), nichts wird
+     beschnitten; die Tafeln stehen unten bündig. */
+  .gallery {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(min(100%, 14rem), 1fr));
+    align-items: end;
+    gap: calc(var(--abstand) * 2) calc(var(--abstand) * 1.5);
+    padding: 0;
+    list-style: none;
+  }
+
+  .gallery img {
+    display: block;
+    width: 100%;
+    height: auto;
+    background: var(--linie); /* Fläche, solange das Bild lädt */
+  }
+
+  /* Tafel wie im Museum: Künstler, Titel kursiv, Jahr */
+  .plaque {
+    margin: calc(var(--abstand) / 2) 0 0;
+    font-size: var(--schrift-klein);
+    line-height: 1.4;
+    color: var(--text-leise);
+  }
+
+  .plaque cite {
+    display: block;
+    color: var(--text);
+  }
+
+  .pagination {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--abstand);
+    margin-top: calc(var(--abstand) * 2);
+    font-family: var(--schrift-sans);
+    font-size: var(--schrift-klein);
   }
 
   /* --- Dunkelmodus: nur die Farbwerte tauschen ----------------------- */

@@ -33,7 +33,6 @@ function aendere(aenderung) {
   zeichne();
 }
 
-/** Vorschläge, die zum Filter passen. */
 function sichtbareVorschlaege() {
   const suche = zustand.filter.trim().toLowerCase();
   if (!suche) return zustand.vorschlaege;
@@ -179,8 +178,6 @@ function lade() {
     return { vorschlaege: [], meldung: "Die gespeicherten Vorschläge passten nicht mehr und wurden zurückgesetzt." };
   }
 }
-
-// --- Start ----------------------------------------------------------
 
 export function starteVorschlaege() {
   if (!formular || !liste || !zaehler || !meldung) return;

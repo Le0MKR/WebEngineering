@@ -10,13 +10,13 @@ Artwell ist ein Online-Museum mit Werken aus der Sammlung des Art Institute of C
 ## Was Artwell heute kann
 
 - **Ausstellung der Woche:** Jeden Montag (nach deutscher Zeit) ist automatisch das nächste von 15 Themen an der Reihe, für alle Besucher gleich.
+- **Werke aus der Sammlung:** Die Startseite lädt die Werke der Ausstellung live aus der API des Art Institute of Chicago und zeigt sie als Galerie mit Museumstafel, 24 pro Seite.
 - **Alle Ausstellungen:** Übersicht der 15 Themen mit Einführungstext und dem nächsten Termin; die laufende Ausstellung ist markiert.
 - **Thema vorschlagen:** Vorschläge erscheinen ohne Neuladen in einer Liste mit Zähler, lassen sich filtern und entfernen und bleiben in diesem Browser gespeichert. Verschickt wird nichts.
 - **Für alle Geräte:** funktioniert vom Handy bis zum großen Bildschirm, hell und dunkel, vollständig per Tastatur bedienbar.
 
 ## Was noch kommt
 
-- Die Werke einer Ausstellung als Galerie anzeigen und seitenweise durchblättern
 - Eine Detailansicht mit großem Bild, Künstler, Datierung, Technik, Maßen und dem Beschreibungstext des Museums
 - Frei in der gesamten Sammlung nach Titel, Künstler oder Stichwort suchen
 - Kunstwerke als Favoriten speichern; die Favoritenliste bleibt im Browser (localStorage) erhalten
@@ -24,15 +24,11 @@ Artwell ist ein Online-Museum mit Werken aus der Sammlung des Art Institute of C
 
 ## Datenquelle
 
-Die Werke kommen ab Termin 7 live aus der Sammlung des Art Institute of Chicago; bis dahin zeigt die Seite die Themen ohne Bilder.
-
 Die App nutzt die öffentliche **Art Institute of Chicago API**, die ohne Registrierung und ohne API-Key zugänglich ist. Laut API umfasst die Sammlung 133.119 Werke (Stand: Oktober 2026).
 
-Abgefragt wird der Endpunkt `/api/v1/artworks/search`. Damit die Antworten klein bleiben, fragen wir über den Parameter `fields` nur die benötigten Felder ab: `id`, `title`, `artist_display`, `date_display`, `medium_display`, `dimensions`, `image_id`, `description`, `short_description`, `thumbnail`, `is_public_domain`, `copyright_notice` sowie für die Ausstellungsthemen `style_titles`, `subject_titles` und `theme_titles`.
+Alle Anfragen stehen in `js/api.js`. Eine Ausstellung ist eine einzige Anfrage an `/api/v1/artworks/search` mit bis zu 96 Werken. Die Abfrage jedes Themas steht in `js/themen.js` (`abfragen`), übernommen aus unserem Konzept, wo jede gegen die API geprüft wurde. Über `fields` fragen wir nur die Felder ab, die die Galerie braucht: `id`, `title`, `artist_title`, `date_display`, `image_id`, `thumbnail` und `artwork_type_title`. Jede Anfrage filtert auf gemeinfreie Werke (`is_public_domain`) mit Bild (`image_id`) und schickt den Header `AIC-User-Agent`, wie es die Doku verlangt.
 
-Die Bilder werden über den IIIF-Bildserver des Museums geladen; die Bild-URL wird aus `config.iiif_url` und der `image_id` zusammengesetzt. Werke ohne `image_id` werden ausgeblendet. Der Text aus `thumbnail.alt_text` dient als Alternativtext für Screenreader. Bei Werken, die nicht gemeinfrei sind, zeigen wir den `copyright_notice` in der Detailansicht an.
-
-Die Daten werden bei jedem Aufruf live von der API geladen, es gibt keine eigene Zwischenspeicherung. Aktualisierungen der Sammlung übernimmt das Museum selbst.
+Die Bilder kommen vom IIIF-Bildserver des Museums: `https://www.artic.edu/iiif/2/{image_id}/full/400,/0/default.jpg`. Der Text aus `thumbnail.alt_text` dient als Alternativtext; fehlt er, setzt `js/api.js` ihn aus Werkart, Titel, Künstler und Jahr zusammen.
 
 **Lizenz:** Die Beschreibungstexte (`description`) stehen unter CC-BY 4.0 und werden in der App mit „Text: Art Institute of Chicago“ gekennzeichnet. Alle anderen Daten stehen unter CC0.
 
@@ -51,7 +47,7 @@ Seit Blatt 4 läuft das Projekt mit Vite. Voraussetzung ist Node.js (aktuelle LT
 
 ```bash
 npm install      # einmalig: lädt Vite und Tailwind nach node_modules/
-npm run dev      # Entwicklungsserver, Adresse steht im Terminal
+npm run dev      # Entwicklungsserver unter http://[::1]:5173
 npm run build    # fertige Seite nach dist/
 npm run preview  # dist/ lokal ansehen
 ```
@@ -164,3 +160,30 @@ Das Formular „Thema vorschlagen“ auf `ueber.html` lädt nicht neu: `js/vorsc
 - **Eine Zeichenfunktion:** `zeichne()` baut Liste, Zähler, Filter und Meldung jedes Mal komplett aus dem Zustand. Jede Änderung (hinzufügen, entfernen, filtern) läuft über `aendere()`, das speichert und dann `zeichne()` aufruft. Deshalb passen Liste und Zähler auch nach dem Löschen zusammen („1 von 3 Vorschlägen passen zum Filter“).
 - **Über den Reload hinweg (Bonus):** Die Vorschläge stehen im `localStorage` unter `artwell.vorschlaege`, zusammen mit einer Versionsnummer. Beim Start wird alles geprüft: kaputtes JSON, eine andere Version oder Einträge mit falschen Feldern werden verworfen, und die Seite sagt das in einem Satz, statt abzustürzen. Klappt der Zugriff gar nicht (privates Fenster), läuft die Seite ohne Speicher weiter.
 - **Fehlersuche:** Die Notizen zu den fünf Fehlern aus dem Baustein `t6-fehlersuche` stehen in [`notizen/fehlersuche.md`](notizen/fehlersuche.md).
+
+## Echte Daten (Blatt 7)
+
+### A1: Die API vor der ersten Zeile Code
+
+Geprüft mit `curl` und im Browser (Rohdaten von `https://api.artic.edu/api/v1/artworks/search?...`), nicht nur aus der Doku abgeschrieben:
+
+1. **Key?** Nein. Die API ist offen, es gibt nichts Geheimes. Gewünscht ist nur der Header `AIC-User-Agent` mit einem Namen und einer Kontaktmöglichkeit; wir schicken `Artwell (https://le0mkr.github.io/WebEngineering/)`.
+2. **Wie viele Anfragen?** 60 pro Minute und IP-Adresse, also höchstens 3.600 pro Stunde. Die Antwort nennt das selbst im Header `x-ratelimit-limit: 60`. Wer darüber liegt, bekommt HTTP 429.
+3. **CORS?** Ja: Die Antwort enthält `access-control-allow-origin: *`, der Browser darf die Daten also von unserer Domain aus lesen. Wir brauchen keinen eigenen Server dazwischen.
+4. **Die drei wichtigsten Felder:** `image_id` (ohne Bild kein Werk in der Galerie), `title` und `artist_title` für die Tafel unter dem Bild.
+
+Eine Falle haben wir beim Testen gefunden: Der Bildserver antwortet mit 403, wenn die Seite über `localhost` läuft. Deshalb startet `npm run dev` jetzt unter `http://[::1]:5173` (Einstellung `server.host` in `vite.config.js`).
+
+### A2 und A3: fetch und die vier Zustände
+
+`js/api.js` holt die Daten mit `async`/`await`, prüft `res.ok` und macht aus jedem Problem einen Fehler mit verständlichem Text. `js/galerie.js` hält wie die Themenvorschläge alles in einem `zustand` und zeichnet daraus die Anzeige:
+
+| Fall | Was man sieht | So führen wir es vor |
+|---|---|---|
+| lädt | „Lade Werke …“ über der leeren Galerie | DevTools → Network → Throttling „Slow 3G“, Seite neu laden |
+| Daten da | Galerie mit „Werke 1 bis 24 von 96“, Blättern per „Weiter“ | Startseite normal öffnen |
+| nichts gefunden | „Für diese Ausstellung wurden keine Werke gefunden.“ | Startseite mit `?seite=99` öffnen (diese Seite gibt es nicht) |
+| Fehler | Meldung ohne Stacktrace und Button „Erneut versuchen“ | DevTools → Network → „Offline“ oder die Anfrage an `api.artic.edu` blockieren (Rechtsklick → „Block request URL“) |
+
+Ein falscher Pfad (z. B. `/artworkz` statt `/artworks`) ergibt HTTP 404. `fetch` wirft dabei keinen Fehler, aber `res.ok` ist `false`, und die Seite zeigt „Die Sammlung hat die Anfrage nicht beantwortet (HTTP 404) …“ statt einer leeren Fläche.
+
