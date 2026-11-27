@@ -281,6 +281,12 @@
 
   input[type="number"] { width: calc(var(--abstand) * 8); }
 
+  /* Suchfeld auf suche.html: nicht über die ganze Breite */
+  .search-form {
+    max-width: 32rem;
+    gap: calc(var(--abstand) / 2);
+  }
+
   textarea { resize: vertical; }
 
   /* --- Themenvorschläge (ueber.html) -------------------------------- */

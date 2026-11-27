@@ -4,7 +4,7 @@
 import { abfragen, themen } from "./js/themen.js";
 import { heuteInBerlin, isoDatum, montagDerWoche, plusWochen, sonntagDerWoche, themaIndex, zeitraum } from "./js/woche.js";
 import { starteVorschlaege } from "./js/vorschlaege.js";
-import { ladeAusstellung } from "./js/api.js";
+import { ladeAusstellung, suche } from "./js/api.js";
 import { starteGalerie } from "./js/galerie.js";
 
 // Lebenszeichen für Blatt 6, A1: Das Skript läuft und findet Elemente im DOM.
@@ -49,6 +49,38 @@ if (galerie === "ausstellung") {
     alleWerke ??= await ladeAusstellung(abfragen[aktuell.slug]);
     return { werke: alleWerke.slice((seite - 1) * proSeite, seite * proSeite), gesamt: alleWerke.length };
   }, "Für diese Ausstellung wurden keine Werke gefunden.");
+}
+
+// --- Suche (nur auf suche.html) ------------------------------------
+
+if (galerie === "suche") {
+  const feld = document.querySelector("#suchbegriff");
+  feld.value = new URLSearchParams(location.search).get("q") ?? "";
+
+  function sucheJetzt() {
+    const begriff = feld.value.trim();
+    const leerText = begriff
+      ? `Keine Treffer für „${begriff}“. Vielleicht hilft ein anderer Begriff, etwa ein Künstlername auf Englisch.`
+      : "Bitte einen Suchbegriff eingeben, zum Beispiel „Monet“ oder „cat“.";
+    starteGalerie(
+      (seite, proSeite) => (begriff ? suche(begriff, seite, proSeite) : { werke: [], gesamt: 0 }),
+      leerText,
+    );
+  }
+
+  // Debounce: erst 300 ms nach dem letzten Tastendruck suchen, nicht bei jedem.
+  let wartezeit;
+  feld.addEventListener("input", () => {
+    clearTimeout(wartezeit);
+    wartezeit = setTimeout(() => {
+      // Suchbegriff in die URL, damit man die Suche teilen kann; Seite zurück auf 1.
+      const begriff = feld.value.trim();
+      history.replaceState(null, "", begriff ? `?q=${encodeURIComponent(begriff)}` : location.pathname);
+      sucheJetzt();
+    }, 300);
+  });
+
+  sucheJetzt();
 }
 
 // Auf der Übersicht wandert das Schild „Diese Woche“ zur richtigen Karte.

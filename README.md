@@ -11,6 +11,7 @@ Artwell ist ein Online-Museum mit Werken aus der Sammlung des Art Institute of C
 
 - **Ausstellung der Woche:** Jeden Montag (nach deutscher Zeit) ist automatisch das nächste von 15 Themen an der Reihe, für alle Besucher gleich.
 - **Werke aus der Sammlung:** Die Startseite lädt die Werke der Ausstellung live aus der API des Art Institute of Chicago und zeigt sie als Galerie mit Museumstafel, 24 pro Seite.
+- **Suche:** frei in der ganzen Sammlung nach Titel, Künstler oder Stichwort suchen; gesucht wird 300 ms nach dem letzten Tastendruck.
 - **Alle Ausstellungen:** Übersicht der 15 Themen mit Einführungstext und dem nächsten Termin; die laufende Ausstellung ist markiert.
 - **Thema vorschlagen:** Vorschläge erscheinen ohne Neuladen in einer Liste mit Zähler, lassen sich filtern und entfernen und bleiben in diesem Browser gespeichert. Verschickt wird nichts.
 - **Für alle Geräte:** funktioniert vom Handy bis zum großen Bildschirm, hell und dunkel, vollständig per Tastatur bedienbar.
@@ -18,7 +19,6 @@ Artwell ist ein Online-Museum mit Werken aus der Sammlung des Art Institute of C
 ## Was noch kommt
 
 - Eine Detailansicht mit großem Bild, Künstler, Datierung, Technik, Maßen und dem Beschreibungstext des Museums
-- Frei in der gesamten Sammlung nach Titel, Künstler oder Stichwort suchen
 - Kunstwerke als Favoriten speichern; die Favoritenliste bleibt im Browser (localStorage) erhalten
 - *Optional / geplant:* Für Werke ohne Museumstext auf Wunsch eine KI-Beschreibung erzeugen, die deutlich als „KI-generiert, nicht vom Museum geprüft“ gekennzeichnet ist
 
@@ -69,6 +69,8 @@ Womit gebaut und warum. Eine Zeile pro Entscheidung reicht, aber es soll eine En
 **Ein Fall, in dem die KI falsch lag:** Beim Umbau für Blatt 4 hat die KI in `style.css` einen Kommentar mit einem doppelten `*/` geschrieben. Dadurch wurde die Regel danach, die für den klebenden Kopf, ungültig. Gemerkt haben wir es an der Warnung „Unexpected token“ beim `npm run build`. Behoben wurde es vor dem Commit, seitdem lesen wir die Build-Ausgabe jedes Mal.
 
 **Noch ein Fall, in dem die KI falsch lag:** Der erste Vite-Build hatte absolute Pfade (`/assets/…`). Als wir `dist/` in einem Unterordner geöffnet haben, wie später auf GitHub Pages, war die Seite ungestylt, weil CSS und JavaScript eine 404 lieferten. Die Lösung war `base: './'` in `vite.config.js`.
+
+**Ein Fall aus Blatt 7, in dem die KI falsch lag:** Die Suche aus dem KI-gebauten Konzept schickte den Suchbegriff als `q` zusammen mit einer Abfrage, die nur filtert. Die API sortiert dann nach Relevanz, filtert aber nicht nach dem Begriff: Jede Suche meldete rund 59.000 Treffer, auch Unsinn wie „xqzzyyq“. Aufgefallen ist es beim Test des Leer-Zustands (A3). Gelöst ist es mit einer `multi_match`-Abfrage auf Titel, Künstler und Schlagworte in `js/api.js`; `q` sorgt weiter für die Reihenfolge.
 
 ## Rich Results Test
 
@@ -186,4 +188,28 @@ Eine Falle haben wir beim Testen gefunden: Der Bildserver antwortet mit 403, wen
 | Fehler | Meldung ohne Stacktrace und Button „Erneut versuchen“ | DevTools → Network → „Offline“ oder die Anfrage an `api.artic.edu` blockieren (Rechtsklick → „Block request URL“) |
 
 Ein falscher Pfad (z. B. `/artworkz` statt `/artworks`) ergibt HTTP 404. `fetch` wirft dabei keinen Fehler, aber `res.ok` ist `false`, und die Seite zeigt „Die Sammlung hat die Anfrage nicht beantwortet (HTTP 404) …“ statt einer leeren Fläche.
+
+### Bonus: Debounce und Cache
+
+Beides ist eingebaut, damit wir die API (60 Anfragen pro Minute) und die Geduld der Besucher schonen:
+
+- **Debounce** auf `suche.html`: Gesucht wird erst 300 ms nach dem letzten Tastendruck (`setTimeout` in `app.js`, jeder neue Tastendruck setzt die Wartezeit mit `clearTimeout` zurück). Kommt eine ältere Antwort trotzdem später an als eine neuere, verwirft `js/galerie.js` sie.
+- **Cache** in `js/api.js`: Jede Antwort landet mit Uhrzeit und Versionsnummer im `localStorage`. Dieselbe Anfrage innerhalb einer Minute wird von dort beantwortet; abgelaufene Einträge werden beim nächsten Speichern gelöscht. Ist der Speicher gesperrt oder kaputt, lädt die Seite einfach neu von der API.
+
+Anfragen an `api.artic.edu` im Network-Tab (Filter „api.artic“):
+
+| Aktion | vorher | nachher |
+|---|---|---|
+| „monet“ zügig ins Suchfeld tippen | 5 (eine pro Buchstabe) | 1 |
+| Startseite innerhalb einer Minute neu laden | 1 | 0 |
+| Auf der Startseite von Seite 1 bis Seite 4 blättern | 4 | 1 |
+| Dieselbe Suche zweimal hintereinander | 2 | 1 |
+
+### Teil C: Verständnisfragen
+
+**Warum wirft `fetch` bei einem 404 keinen Fehler?** Für `fetch` ist die Anfrage gelungen, sobald überhaupt eine Antwort vom Server zurückkommt, auch wenn diese Antwort „gibt es nicht“ lautet. Fehler wirft `fetch` nur, wenn gar keine Antwort ankommt, etwa offline oder bei einem CORS-Verbot. Deshalb prüfen wir nach jeder Anfrage `res.ok` (wahr bei Status 200 bis 299) und werfen selbst einen Fehler mit verständlicher Meldung, den das `catch` in `js/galerie.js` als Fehlerzustand anzeigt.
+
+**CORS in drei Sätzen:** Der Browser blockiert, dass ein Skript von unserer Domain die Antwort einer fremden Domain liest, solange diese das nicht ausdrücklich erlaubt. Das schützt die Nutzer: Eine fremde Seite soll nicht mit deren Cookies und Anmeldungen heimlich Daten von anderen Diensten abrufen können. Helfen kann nur der angefragte Server, indem er einen Header wie `Access-Control-Allow-Origin: *` schickt (wie das Art Institute), oder ein eigener Server, der die Anfrage weiterreicht.
+
+**Was heißt asynchron?** Der Browser schickt die Anfrage los und macht sofort weiter; die Antwort wird später verarbeitet, wenn sie da ist (`await` wartet nur innerhalb der eigenen Funktion). Wäre `fetch` synchron, stünde die ganze Seite still, bis die Antwort da ist: keine Klicks, kein Scrollen, kein „Lade …“, und bei einem langsamen Netz wirkte die Seite minutenlang eingefroren.
 

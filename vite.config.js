@@ -2,7 +2,7 @@ import { resolve } from 'node:path';
 import { defineConfig } from 'vite';
 import tailwindcss from '@tailwindcss/vite';
 
-// Vite baut ohne Angabe nur index.html. Artwell hat vier Seiten,
+// Vite baut ohne Angabe nur index.html. Artwell hat mehrere Seiten,
 // deshalb stehen hier alle als Einstiegspunkte.
 export default defineConfig({
   // Relative Pfade, damit dist/ auch in einem Unterordner läuft (z. B. GitHub Pages).
@@ -18,6 +18,7 @@ export default defineConfig({
         ausstellungen: resolve(import.meta.dirname, 'ausstellungen.html'),
         ueber: resolve(import.meta.dirname, 'ueber.html'),
         danke: resolve(import.meta.dirname, 'danke.html'),
+        suche: resolve(import.meta.dirname, 'suche.html'),
       },
     },
   },

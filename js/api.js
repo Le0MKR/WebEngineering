@@ -10,8 +10,41 @@ const BILDSERVER = "https://www.artic.edu/iiif/2";
 const FELDER = "id,title,artist_title,date_display,image_id,thumbnail,artwork_type_title";
 const NUR_GEMEINFREI_MIT_BILD = [{ term: { is_public_domain: true } }, { exists: { field: "image_id" } }];
 
-/** Holt JSON von der API. Wirft einen Fehler mit verständlicher Meldung. */
+/* Bonus Blatt 7: Dieselbe Anfrage wird eine Minute lang aus dem localStorage
+ * beantwortet. Jeder Eintrag trägt eine Versionsnummer und die Uhrzeit. */
+const CACHE_PRAEFIX = "artwell.api:";
+const CACHE_VERSION = 1;
+const EINE_MINUTE = 60 * 1000;
+
+function ausDemCache(pfad) {
+  try {
+    const eintrag = JSON.parse(localStorage.getItem(CACHE_PRAEFIX + pfad));
+    if (eintrag?.version === CACHE_VERSION && Date.now() - eintrag.zeit < EINE_MINUTE) return eintrag.daten;
+  } catch {
+    // kaputter Eintrag oder kein Speicher (z. B. privates Fenster): einfach neu laden
+  }
+  return null;
+}
+
+function inDenCache(pfad, daten) {
+  try {
+    // Abgelaufene Einträge zuerst löschen, damit der Speicher nicht voll läuft.
+    for (const schluessel of Object.keys(localStorage)) {
+      if (schluessel.startsWith(CACHE_PRAEFIX) && !ausDemCache(schluessel.slice(CACHE_PRAEFIX.length))) {
+        localStorage.removeItem(schluessel);
+      }
+    }
+    localStorage.setItem(CACHE_PRAEFIX + pfad, JSON.stringify({ version: CACHE_VERSION, zeit: Date.now(), daten }));
+  } catch {
+    // Speicher voll oder gesperrt: Die Seite funktioniert auch ohne Cache.
+  }
+}
+
+/** Holt JSON von der API (oder aus dem Cache). Wirft einen Fehler mit verständlicher Meldung. */
 async function frage(pfad) {
+  const gemerkt = ausDemCache(pfad);
+  if (gemerkt) return gemerkt;
+
   let res;
   try {
     res = await fetch(API + pfad, {
@@ -24,7 +57,9 @@ async function frage(pfad) {
   // Bei 404 oder 500 wirft fetch keinen Fehler, deshalb prüfen wir res.ok selbst.
   if (res.status === 429) throw new Error("Zu viele Anfragen in kurzer Zeit. Bitte einen Moment warten und es erneut versuchen.");
   if (!res.ok) throw new Error(`Die Sammlung hat die Anfrage nicht beantwortet (HTTP ${res.status}). Bitte später erneut versuchen.`);
-  return res.json();
+  const daten = await res.json();
+  inDenCache(pfad, daten);
+  return daten;
 }
 
 function suchen(params) {
@@ -71,4 +106,27 @@ export async function ladeAusstellung(abfrage) {
     limit: 96,
   });
   return daten.data.map(zuWerk).filter(Boolean);
+}
+
+/** Die API liefert höchstens die ersten 10 000 Treffer einer Suche. */
+export const MAX_TREFFER = 10000;
+
+export async function suche(begriff, seite, proSeite) {
+  if (seite * proSeite > MAX_TREFFER) {
+    throw new Error("So weit lässt sich in den Treffern nicht blättern. Ein genauerer Suchbegriff hilft.");
+  }
+  // q allein sortiert nur nach Relevanz, filtert aber nicht; das erledigt multi_match.
+  const daten = await suchen({
+    q: begriff,
+    query: {
+      bool: {
+        must: [{ multi_match: { query: begriff, fields: ["title", "artist_title", "term_titles"] } }],
+        filter: NUR_GEMEINFREI_MIT_BILD,
+      },
+    },
+    fields: FELDER,
+    limit: proSeite,
+    page: seite,
+  });
+  return { werke: daten.data.map(zuWerk).filter(Boolean), gesamt: daten.pagination.total };
 }

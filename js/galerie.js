@@ -10,7 +10,7 @@
  * Woher die Werke kommen, entscheidet die Seite: Sie übergibt eine Funktion
  * ladeSeite(seite, proSeite), die { werke, gesamt } liefert. */
 
-import { bildUrl } from "./api.js";
+import { bildUrl, MAX_TREFFER } from "./api.js";
 
 const PRO_SEITE = 24;
 
@@ -26,6 +26,8 @@ const zustand = {
   seite: 1,
   meldung: "",
 };
+
+let laufNummer = 0;
 
 function aendere(aenderung) {
   Object.assign(zustand, aenderung);
@@ -69,7 +71,7 @@ function baueKachel(werk) {
 
 /** „Zurück“ und „Weiter“ sind normale Links mit ?seite=…, so funktioniert auch der Zurück-Button. */
 function zeichneBlaettern() {
-  const seiten = Math.ceil(zustand.gesamt / PRO_SEITE);
+  const seiten = Math.min(Math.ceil(zustand.gesamt / PRO_SEITE), Math.floor(MAX_TREFFER / PRO_SEITE));
   blaettern.replaceChildren();
   if (zustand.lage !== "inhalt" || seiten < 2) return;
 
@@ -96,12 +98,17 @@ export async function starteGalerie(ladeSeite, leerText) {
   const seite = Math.max(1, Math.floor(Number(new URLSearchParams(location.search).get("seite"))) || 1);
   erneut.onclick = () => starteGalerie(ladeSeite, leerText);
 
+  // Kommt eine ältere Antwort erst nach einer neueren an, wird sie verworfen.
+  const meinLauf = ++laufNummer;
+
   aendere({ lage: "laedt", seite });
   try {
     const { werke, gesamt } = await ladeSeite(seite, PRO_SEITE);
+    if (meinLauf !== laufNummer) return;
     if (werke.length === 0) aendere({ lage: "leer", meldung: leerText });
     else aendere({ lage: "inhalt", werke, gesamt });
   } catch (fehler) {
+    if (meinLauf !== laufNummer) return;
     aendere({ lage: "fehler", meldung: fehler.message });
   }
 }
