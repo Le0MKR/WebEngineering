@@ -395,7 +395,7 @@
     font-size: var(--schrift-klein);
   }
 
-  .room a { color: var(--auf-raum); }
+  .room a:not(.button) { color: var(--auf-raum); }
 
   .room :focus-visible { outline-color: var(--auf-raum); }
 
